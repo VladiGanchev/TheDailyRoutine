@@ -1,0 +1,49 @@
+# Build directories
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Logs
+*.log
+
+# User-specific files
+*.user
+*.suo
+
+# IDE settings
+.idea/
+.vscode/
+
+# Compiled source files
+*.dll
+*.exe
+*.pdb
+*.class
+*.o
+*.so
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Package manager files
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Others
+*.bak
+*.old
+*.orig
