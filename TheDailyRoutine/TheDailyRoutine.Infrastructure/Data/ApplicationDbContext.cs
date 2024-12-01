@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace TheDailyRoutine.Data
+namespace TheDailyRoutine.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
