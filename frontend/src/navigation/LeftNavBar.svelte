@@ -1,41 +1,68 @@
 <script>
-	let my_habits_selector = ["My Habits", "Calendar", "Statistics"];
-	let add_habits_selector = ["Create a Habit", "Pick a Habit"]
-	let settings = ["Account", "Logout"]
+	let my_habits_selector = [
+		{ name: "Calendar", path: "/#/calendar" },
+		{ name: "My Habits", path: "/#/my-habits" },
+		{ name: "Statistics", path: "/#/statistics" }
+	];
+
+	let add_habits_selector = [
+		{ name: "Create a Habit", path: "/#/create-habit" },
+		{ name: "Pick a Habit", path: "/#/pick-habits" }
+	];
+
+	let settings = [
+		{ name: "Account", path: "/#/account" },
+		{ name: "Logout", path: "/#/logout" }
+	];
+
+	export let component;
 </script>
 
-<div class="nav-bar">
-	<div class="profile">
-		<div>The Daily Routine</div>
+<div class="page">
+	<div class="nav-bar">
+		<div class="title">
+			<div>The Daily Routine</div>
+		</div>
+		<div class="section">
+			<div class="section-title">MY HABITS</div>
+			{#each my_habits_selector as my_habit}
+				<div class="list-item">
+					<a class="item-name" href={my_habit.path}>{my_habit.name}</a>
+				</div>
+			{/each}
+		</div>
+		<div class="section">
+			<div class="section-title">ADD HABITS</div>
+			{#each add_habits_selector as add_habit}
+				<div class="list-item">
+					<a class="item-name" href={add_habit.path}>{add_habit.name}</a>
+				</div>
+			{/each}
+		</div>
+		<div class="section">
+			<div class="section-title">SETTINGS</div>
+			{#each settings as setting}
+				<div class="list-item">
+					<a class="item-name" href={setting.path}>{setting.name}</a>
+				</div>
+			{/each}
+		</div>
 	</div>
 
-	<div class="section">
-		<div class="section-title">MY HABITS</div>
-		{#each my_habits_selector as my_habit}
-			<div class="list-item">{my_habit}</div>
-		{/each}
+	<div class="main-content">
+		<svelte:component this={component} />
 	</div>
-
-	<div class="section">
-		<div class="section-title">ADD HABITS</div>
-		{#each add_habits_selector as add_habit}
-			<div class="list-item">{add_habit}</div>
-		{/each}
-	</div>
-
-	<div class="section">
-		<div class="section-title">SETTINGS</div>
-		{#each settings as setting}
-			<div class="list-item">{setting}</div>
-		{/each}
-	</div>
-
 </div>
 
+
 <style>
+		.page {
+				display: flex;
+		}
+
     .nav-bar {
 				position: fixed;
-        width: 240px;
+        width: 20vh;
         background-color: #1e1e1e;
         color: white;
         height: 100vh;
@@ -46,11 +73,13 @@
         gap: 1rem;
     }
 
-    .profile {
+    .title {
         display: flex;
         justify-content: center;
         padding: 0.5rem 0;
         border-bottom: 1px solid #333;
+				font-weight: bolder;
+				font-size: 1.2rem;
     }
 
     .section {
@@ -69,11 +98,19 @@
         border-radius: 4px;
     }
 
-    .list-item:hover {
-        background-color: #333;
+    .list-item:hover .item-name {
+				color: #888;
     }
 
-    .icon {
-        margin-right: 0.5rem;
+		.item-name {
+				color: #fff;
+		}
+
+    .main-content {
+        display: flex;
+				align-items: center;
+        margin-left: 26vh;
+        padding: 1rem;
+        flex-grow: 1;
     }
 </style>
