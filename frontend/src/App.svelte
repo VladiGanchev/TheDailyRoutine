@@ -26,7 +26,11 @@
 	$: currentUser = $user
 
 	const validateLogin = () => {
-		return currentUser.token !== null;
+		return currentUser !== null;
+	}
+
+	const validateLoginFailed = () => {
+		navigateTo("/");
 	}
 
 	// Define the route configuration
@@ -34,40 +38,54 @@
 		"/": Home,
 		"/account": wrap({
 			component: LeftNavBar,
-			props: {component: MyAccount},
-			conditions: [() => {return validateLogin();}]
+			props: { component: MyAccount },
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"/calendar": wrap({
 			component: LeftNavBar,
-			props: {component: Calendar},
-			conditions: [() => {return validateLogin();}]
+			props: { component: Calendar },
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"/statistics": wrap({
 			component: LeftNavBar,
-			props: {component: Statistics},
-			conditions: [() => {return validateLogin();}]
+			props: { component: Statistics },
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"/my-habits": wrap({
 			component: LeftNavBar,
-			props: {component: MyHabits},
-			conditions: [() => {return validateLogin();}]
+			props: { component: MyHabits },
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"/create-habit": wrap({
 			component: LeftNavBar,
-			props: {component: CreateHabit},
-			conditions: [() => {return validateLogin();}]
+			props: { component: CreateHabit },
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"/pick-habits": wrap({
 			component: LeftNavBar,
-			props: {component: PickHabits},
-			conditions: [() => {return validateLogin();}]
+			props: { component: PickHabits },
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"/logout": wrap({
 			component: Logout,
-			conditions: [() => {return validateLogin();}]
+			conditions: [() => {
+				return validateLogin();
+			}]
 		}),
 		"*": NotFound
 	};
 </script>
 
-<Router {routes} />
+<Router {routes} on:conditionsFailed={validateLoginFailed} />
