@@ -100,7 +100,7 @@
         padding: 2.5rem;
         border-radius: 8px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-        max-width: 400px;
+        max-width: 30rem;
         width: 100%;
         text-align: center;
         z-index: 2;
@@ -116,6 +116,10 @@
         color: #b0b0b0;
         margin-bottom: 1.5rem;
     }
+
+		.toggle-link {
+				margin-top: 1rem;
+		}
 
     .toggle-link a {
         color: #60a5fa;
