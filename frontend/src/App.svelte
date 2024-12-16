@@ -3,6 +3,7 @@
 	import wrap from 'svelte-spa-router/wrap';
 
 	import { user } from './js/stores.js';
+	import { navigateTo } from './js/helpers.js';
 
 	// Route imports
 	import Home from "./Home.svelte";
@@ -14,7 +15,7 @@
 	import PickHabits from "./habits/PickHabits.svelte";
 	import Logout from './authentication/Logout.svelte';
 	import NotFound from "./navigation/NotFound.svelte";
-	import { navigateTo } from './js/helpers.js';
+	import LeftNavBar from './navigation/LeftNavBar.svelte';
 
 	if (!window.location.hash) {
 		navigateTo(window.location.pathname);
@@ -32,27 +33,33 @@
 	const routes = {
 		"/": Home,
 		"/account": wrap({
-			component: MyAccount,
+			component: LeftNavBar,
+			props: {component: MyAccount},
 			conditions: [() => {return validateLogin();}]
 		}),
 		"/calendar": wrap({
-			component: Calendar,
+			component: LeftNavBar,
+			props: {component: Calendar},
 			conditions: [() => {return validateLogin();}]
 		}),
 		"/statistics": wrap({
-			component: Statistics,
+			component: LeftNavBar,
+			props: {component: Statistics},
 			conditions: [() => {return validateLogin();}]
 		}),
 		"/my-habits": wrap({
-			component: MyHabits,
+			component: LeftNavBar,
+			props: {component: MyHabits},
 			conditions: [() => {return validateLogin();}]
 		}),
 		"/create-habit": wrap({
-			component: CreateHabit,
+			component: LeftNavBar,
+			props: {component: CreateHabit},
 			conditions: [() => {return validateLogin();}]
 		}),
 		"/pick-habits": wrap({
-			component: PickHabits,
+			component: LeftNavBar,
+			props: {component: PickHabits},
 			conditions: [() => {return validateLogin();}]
 		}),
 		"/logout": wrap({
