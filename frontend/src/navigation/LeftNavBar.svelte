@@ -112,12 +112,17 @@
     }
 
     .main-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
         display: flex;
         justify-content: center;
-        flex-grow: 1;
-        /*overflow: hidden;*/
-        position: relative;
-        z-index: 1;
+        align-items: center;
+        width: calc(100% - 24vh);
+        height: auto;
+        padding: 2rem;
     }
 
     /* Curving lines */
