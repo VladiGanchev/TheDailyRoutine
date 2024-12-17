@@ -1,11 +1,12 @@
 <script>
-	let title = '';
-	let description = '';
 	let frequency = 'daily';
 	let startNow = false;
 	let predefinedHabit = false;
 
 	let errorMessage = '';
+
+	export let title = '';
+	export let description = '';
 
 	const handleSubmit = () => {
 		// Validate
@@ -94,7 +95,6 @@
         padding: 1rem;
         border-radius: 8px;
         width: 32rem;
-        margin: 4rem auto;
         display: flex;
         justify-content: center;
         flex-direction: column;
