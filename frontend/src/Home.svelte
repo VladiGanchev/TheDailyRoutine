@@ -16,9 +16,9 @@
 		showRegister = !showRegister;
 	};
 
-	onMount(async () => {
+	onMount(() => {
 		if (currentUser) {
-			navigateTo("/calendar")
+			navigateTo("/today")
 		}
 	})
 </script>

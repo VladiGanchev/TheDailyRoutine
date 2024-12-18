@@ -43,11 +43,11 @@
 				password: password,
 			}
 			const response = await fetchPost("/api/auth/register", body)
-			if (response.status === 201) {
+			if (response.token) {
 				login(response);
-				navigateTo("/calendar")
+				navigateTo("/today")
 			} else {
-				errorMessage = response.statusText;
+				errorMessage = response.error;
 			}
 		}
 	};
@@ -88,7 +88,6 @@
 				autocomplete="new-password"
 				bind:value={password}
 			/>
-			<!-- Toggle Icon -->
 			<button
 				type="button"
 				class="toggle-icon"
@@ -114,7 +113,6 @@
 				autocomplete="new-password"
 				bind:value={confirmPassword}
 			/>
-			<!-- Toggle Icon -->
 			<button
 				type="button"
 				class="toggle-icon"

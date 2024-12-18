@@ -1,5 +1,6 @@
 <script>
 	let my_habits_selector = [
+		{ name: "Today", path: "/#/today" },
 		{ name: "Calendar", path: "/#/calendar" },
 		{ name: "My Habits", path: "/#/my-habits" },
 		{ name: "Statistics", path: "/#/statistics" }

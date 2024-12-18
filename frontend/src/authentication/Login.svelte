@@ -26,7 +26,7 @@
 			const response = await fetchPost("/api/auth/login", body)
 			if (response.token) {
 				login(response);
-				navigateTo("/calendar")
+				navigateTo("/today")
 			} else {
 				errorMessage = response.error;
 			}
@@ -59,7 +59,6 @@
 				autocomplete="new-password"
 				bind:value={password}
 			/>
-			<!-- Toggle Icon -->
 			<button
 				type="button"
 				class="toggle-icon"

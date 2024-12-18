@@ -16,6 +16,7 @@
 	import Logout from './authentication/Logout.svelte';
 	import NotFound from "./navigation/NotFound.svelte";
 	import LeftNavBar from './navigation/LeftNavBar.svelte';
+	import Today from './habits/Today.svelte';
 
 	if (!window.location.hash) {
 		navigateTo(window.location.pathname);
@@ -39,6 +40,13 @@
 		"/account": wrap({
 			component: LeftNavBar,
 			props: { component: MyAccount },
+			conditions: [() => {
+				return validateLogin();
+			}]
+		}),
+		"/today": wrap({
+			component: LeftNavBar,
+			props: { component: Today },
 			conditions: [() => {
 				return validateLogin();
 			}]
