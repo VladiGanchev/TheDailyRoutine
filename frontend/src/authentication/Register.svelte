@@ -155,7 +155,6 @@
         border: 1px solid #444;
         border-radius: 5px;
         background-color: #2e2e2e;
-        color: #fff;
     }
 
     .input-group input:focus {
@@ -170,31 +169,26 @@
 
     .toggle-icon {
         position: absolute;
-        right: 5px;
-        top: 5px;
+        right: 6px;
+        top: 6px;
         background: transparent;
         border: none;
         cursor: pointer;
-        font-size: 1.2rem;
-        color: #666;
+        font-size: 1.3rem;
     }
 
     .toggle-icon:focus {
         outline: none;
     }
 
-    .toggle-icon:hover {
-        color: #000;
-    }
-
     .register-button {
-        padding: 0.75rem;
-        background-color: #60a5fa;
-        color: #fff;
+        background-color: #2563eb;
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        padding: 0.75rem;
         font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     .register-button:hover {
@@ -206,7 +200,6 @@
         background-color: #2e2e2e;
         padding: 0.5rem;
         border-radius: 5px;
-        text-align: center;
         font-weight: bold;
     }
 </style>

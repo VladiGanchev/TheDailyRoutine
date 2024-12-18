@@ -102,7 +102,6 @@
         border: 1px solid #444;
         border-radius: 6px;
         background-color: #2e2e2e;
-        color: #ffffff;
     }
 
     .input-group input:focus {
@@ -117,26 +116,20 @@
 
     .toggle-icon {
         position: absolute;
-        right: 5px;
-				top: 5px;
+        right: 6px;
+				top: 6px;
         background: transparent;
         border: none;
         cursor: pointer;
-        font-size: 1.2rem;
-        color: #666;
+        font-size: 1.3rem;
     }
 
     .toggle-icon:focus {
         outline: none;
     }
 
-    .toggle-icon:hover {
-        color: #000;
-    }
-
     .login-button {
         background-color: #2563eb;
-        color: #ffffff;
         border: none;
         padding: 0.75rem;
         font-size: 1rem;
@@ -154,7 +147,6 @@
         background-color: #2e2e2e;
         padding: 0.5rem;
         border-radius: 5px;
-        text-align: center;
         font-weight: bold;
     }
 </style>

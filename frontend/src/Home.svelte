@@ -53,15 +53,12 @@
 
 <style>
     .fullscreen-container {
-        position: relative;
         width: 100%;
         height: 100vh;
-        overflow: hidden;
         background-color: #121212;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #ffffff;
     }
 
     .glow,
@@ -95,24 +92,20 @@
     }
 
     .card {
-        position: relative;
         background-color: #1e1e1e;
         padding: 2.5rem;
         border-radius: 8px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
         max-width: 30rem;
-        width: 100%;
         text-align: center;
         z-index: 2;
     }
 
     .title {
-        font-size: 2rem;
         margin-bottom: 1rem;
     }
 
     .description {
-        font-size: 1rem;
         color: #b0b0b0;
         margin-bottom: 1.5rem;
     }
