@@ -11,7 +11,7 @@
 	let selectedHabit = null;
 	let showCreateHabit = false;
 
-	const handleAddHabit = (habit) => {
+	const handleAddHabit = habit => {
 		selectedHabit = habit;
 		showCreateHabit = true;
 	};
@@ -55,16 +55,14 @@
 
 <style>
     .habit-list-container {
-        margin: 2rem auto;
         background-color: #2d2d2d;
         border-radius: 8px;
-        color: white;
 				max-width: 85%;
     }
 
     h2 {
         font-size: 1.8rem;
-        margin: 1rem 0;
+        margin-top: 1rem;
         border-bottom: 1px solid #444;
         padding-bottom: 0.5rem;
 				text-align: center;
@@ -73,7 +71,6 @@
     .habit-cards {
         display: flex;
         flex-wrap: wrap;
-				padding: 1rem;
 				max-width: 100%;
         justify-content: center;
     }
@@ -97,10 +94,6 @@
         border-color: #00bcd4;
     }
 
-    .card-content {
-        text-align: left;
-    }
-
     .habit-title {
         font-size: 1.3rem;
         margin-bottom: 0.5rem;
@@ -108,13 +101,12 @@
     }
 
     .habit-description {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: #aaa;
     }
 
     .add-btn {
         background-color: #0061f2;
-        color: white;
         font-size: 1.5rem;
         border: none;
         border-radius: 50%;

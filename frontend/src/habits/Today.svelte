@@ -170,6 +170,7 @@
         background-color: #1e1e1e;
         border: 1px solid #333;
         border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
         width: 100%;
         padding: 1rem;
         display: flex;
