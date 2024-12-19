@@ -21,9 +21,6 @@
 
 <div class="page">
 	<div class="nav-bar">
-		<div class="title">
-			<div>The Daily Routine</div>
-		</div>
 		<div class="section">
 			<div class="section-title">MY HABITS</div>
 			{#each my_habits_selector as my_habit}
@@ -74,18 +71,10 @@
         padding: 1rem;
         display: flex;
         flex-direction: column;
+				justify-content: center;
         gap: 1rem;
         z-index: 2;
         opacity: 100%
-    }
-
-    .title {
-        display: flex;
-        justify-content: center;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #333;
-        font-weight: bolder;
-        font-size: 1.2rem;
     }
 
     .section {
