@@ -1,6 +1,7 @@
 <script>
 	import CreateHabit from './CreateHabit.svelte';
 
+
 	let habits = [
 		{ id: 1, title: "Morning Jog", description: "Run for 30 minutes every morning to stay fit." },
 		{ id: 2, title: "Meditation", description: "Meditate for 10 minutes to calm your mind." },
@@ -12,7 +13,7 @@
 	let showCreateHabit = false;
 
 	const handleAddHabit = (habit) => {
-		selectedHabit = habit;
+        selectedHabit = habit;
 		showCreateHabit = true;
 	};
 

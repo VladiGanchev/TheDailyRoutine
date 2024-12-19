@@ -1,4 +1,6 @@
 <script>
+    import { addHabit } from "../js/stores";
+
 	let frequency = 'daily';
 	let startNow = false;
 	let predefinedHabit = false;
@@ -21,6 +23,7 @@
 				startNow,
 				predefinedHabit
 			};
+            addHabit(newHabit); // Save the habit
 			console.log('New Habit Created:', newHabit);
 		}
 	};
