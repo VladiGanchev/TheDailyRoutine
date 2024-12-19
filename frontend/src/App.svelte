@@ -16,7 +16,7 @@
 	import Logout from './authentication/Logout.svelte';
 	import NotFound from "./navigation/NotFound.svelte";
 	import LeftNavBar from './navigation/LeftNavBar.svelte';
-	import Today from './habits/Today.svelte';
+	import Today from './calendar/Today.svelte';
 
 	if (!window.location.hash) {
 		navigateTo(window.location.pathname);

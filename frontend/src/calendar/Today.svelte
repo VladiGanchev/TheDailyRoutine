@@ -1,25 +1,26 @@
 <script>
 	import { onMount } from "svelte";
 
-	let habits = [];
 	let filteredHabits = [];
 	let today = "";
 
 	let showCompleted = "all";
 	let frequencyFilter = "all";
 
-	const fetchHabits = async () => {
-		const mockHabits = [
-			{ id: 1, title: "Morning Jog", type: "daily", completed: false, streak: 5, isActive: true },
-			{ id: 2, title: "Meditation", type: "daily", completed: true, streak: 15, isActive: true },
-			{ id: 3, title: "Weekly Review", type: "weekly", completed: false, streak: 2, isActive: false },
-			{ id: 4, title: "Monthly Budgeting", type: "monthly", completed: true, streak: 25, isActive: true },
-		];
-		return new Promise((resolve) => setTimeout(() => resolve(mockHabits), 500));
-	};
+	export let date = new Date();
+	export let habits;
+
+	// const fetchHabits = async () => {
+	// 	const mockHabits = [
+	// 		{ id: 1, title: "Morning Jog", type: "daily", completed: false, streak: 5, isActive: true },
+	// 		{ id: 2, title: "Meditation", type: "daily", completed: true, streak: 15, isActive: true },
+	// 		{ id: 3, title: "Weekly Review", type: "weekly", completed: false, streak: 2, isActive: false },
+	// 		{ id: 4, title: "Monthly Budgeting", type: "monthly", completed: true, streak: 25, isActive: true },
+	// 	];
+	// 	return new Promise((resolve) => setTimeout(() => resolve(mockHabits), 500));
+	// };
 
 	onMount(async () => {
-		const date = new Date();
 		today = date.toLocaleDateString("en-US", {
 			weekday: "long",
 			month: "long",
@@ -27,9 +28,7 @@
 			year: "numeric",
 		});
 
-		const habitsFromAPI = await fetchHabits();
-		habits = habitsFromAPI.filter(habit => habit.isActive);
-		filteredHabits = habits;
+		filteredHabits = habits.filter(habit => habit.isActive);
 	});
 
 	const toggleCompletion = habitId => {
