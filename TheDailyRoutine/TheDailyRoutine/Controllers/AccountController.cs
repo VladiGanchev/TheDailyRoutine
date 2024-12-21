@@ -20,14 +20,14 @@ namespace TheDailyRoutine.Controllers
             _emailSender = emailSender;
         }
 
-        // GET: /Account/Register
+        // /Account/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: /Account/Register
+        // /Account/Register
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -42,7 +42,7 @@ namespace TheDailyRoutine.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Generate Email Confirmation Token
+                    // generate  Confirmation Token
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(
                         "ConfirmEmail",
@@ -50,7 +50,7 @@ namespace TheDailyRoutine.Controllers
                         new { userId = user.Id, token = token },
                         Request.Scheme);
 
-                    // Send confirmation email
+                    // send confirmation email
                     await _emailSender.SendEmailAsync(
                         model.Email,
                         "Confirm your email",
@@ -70,14 +70,14 @@ namespace TheDailyRoutine.Controllers
             return View(model);
         }
 
-        // GET: /Account/Login
+        // /Account/Login
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /Account/Login
+        // /Account/Login
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
@@ -120,7 +120,7 @@ namespace TheDailyRoutine.Controllers
             return View(model);
         }
 
-        // GET: /Account/ConfirmEmail
+        // /Account/ConfirmEmail
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
@@ -139,7 +139,7 @@ namespace TheDailyRoutine.Controllers
             return result.Succeeded ? View("ConfirmEmail") : View("Error");
         }
 
-        // POST: /Account/Logout
+        // /Account/Logout
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
