@@ -1,4 +1,4 @@
-const domain = 'http://localhost:8080';
+const domain = 'http://localhost:5271';
 
 // Fetch get request
 export async function fetchGet(relative_url) {
@@ -27,5 +27,14 @@ export async function fetchPost(relative_url, data) {
 		body: JSON.stringify(data),
 	});
 
+	return await res.json();
+}
+
+export async function fetchDelete(relative_url) {
+	let url = domain.concat(relative_url);
+	const res = await fetch(url, {
+		method: 'DELETE',
+		credentials: 'include'
+	});
 	return await res.json();
 }

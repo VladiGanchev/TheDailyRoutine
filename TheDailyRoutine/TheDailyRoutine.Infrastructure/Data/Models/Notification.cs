@@ -12,6 +12,7 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
 {
     public class Notification
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -22,7 +23,15 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        public bool Mailable { get; set; } 
+        public bool Mailable { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? SentAt { get; set; }
+
+        public string? RelatedEntityId { get; set; }
+
+        public string? RelatedEntityType { get; set; }
 
         public ICollection<UserNotification> UserNotifications { get; set; } = new List<UserNotification>();
     }

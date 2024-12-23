@@ -7,7 +7,7 @@ using TheDailyRoutine.Infrastructure.Data.Models;
 
 namespace TheDailyRoutine.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -52,6 +52,26 @@ namespace TheDailyRoutine.Infrastructure.Data
             builder.Entity<UserHabit>()
                 .HasKey(x => new { x.UserId, x.HabitId });
 
+            builder.Entity<UserNotification>()
+              .HasKey(x => new { x.UserId, x.NotificationId });
+
+            builder.Entity<UserNotification>()
+                .Property(x => x.IsRead)
+                .HasDefaultValue(false);
+
+            builder.Entity<UserNotification>()
+                .Property(x => x.IsEmailed)
+                .HasDefaultValue(false);
+
+            builder.Entity<Notification>()
+                .Property(x => x.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            builder.Entity<UserNotificationPreferences>()
+                .Property(x => x.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+
             builder.ApplyConfiguration(new HabitConfiguration());
 
             base.OnModelCreating(builder);
@@ -62,5 +82,8 @@ namespace TheDailyRoutine.Infrastructure.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserHabit> UsersHabits { get; set; }
         public DbSet<UserNotification> UsersNotifications { get; set; }
+        public DbSet<UserNotificationPreferences> UserNotificationPreferences { get; set; }
+
+
     }
 }
