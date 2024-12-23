@@ -11,12 +11,18 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
     {
         [Required]
         public string UserId { get; set; } = string.Empty;
-
         public ApplicationUser User { get; set; } = null!;
 
         [Required]
         public int NotificationId { get; set; }
         public Notification Notification { get; set; } = null!;
 
+        public bool IsRead { get; set; }
+
+        public DateTime? ReadAt { get; set; }
+
+        public bool IsEmailed { get; set; }
+
+        public DateTime? EmailedAt { get; set; }
     }
 }
