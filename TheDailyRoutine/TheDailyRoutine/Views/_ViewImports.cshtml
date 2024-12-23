@@ -1,3 +1,7 @@
 ﻿@using TheDailyRoutine
 @using TheDailyRoutine.Models
+@using TheDailyRoutine.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
