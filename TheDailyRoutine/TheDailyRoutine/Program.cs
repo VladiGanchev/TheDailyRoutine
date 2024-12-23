@@ -5,7 +5,6 @@ using TheDailyRoutine.Infrastructure.Data;
 using TheDailyRoutine.Infrastructure.Data.Models;
 using TheDailyRoutine.Infrastructure.Extensions;
 using TheDailyRoutine.Core.Extensions;
-using TheDailyRoutine.Extensions;
 using TheDailyRoutine.Core.Services;
 using Microsoft.EntityFrameworkCore;
 
