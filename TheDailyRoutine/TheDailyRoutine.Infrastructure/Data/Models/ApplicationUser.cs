@@ -18,5 +18,7 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
         [Required]
         [MaxLength(UserLastNameMaxLength)]
         public string LastName { get; set; } = string.Empty;
+        public UserNotificationPreferences NotificationPreferences { get; set; }
+
     }
 }
