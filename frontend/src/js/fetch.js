@@ -1,8 +1,9 @@
 const domain = 'http://localhost:5271';
 
+
 // Fetch get request
 export async function fetchGet(relative_url) {
-
+	debugger;
 	let url = domain.concat(relative_url);
 
 	const res = await fetch(url, {
@@ -13,24 +14,42 @@ export async function fetchGet(relative_url) {
 
 // Fetch post request with JSON body
 export async function fetchPost(relative_url, data) {
+    let url = domain.concat(relative_url);
+    
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(data),
+            redirect: 'error' // prevent automatic redirects
+        });
 
-	let url = domain.concat(relative_url);
+        // Check if response is JSON
+        debugger;
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("Response was not JSON");
+        }
 
-	const res = await fetch(url, {
-		method: 'POST',
-		mode: 'cors',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		},
-		body: JSON.stringify(data),
-	});
+        const jsonResponse = await res.json();
+        
+        if (!res.ok) {
+            throw new Error(jsonResponse.error || 'Server error');
+        }
 
-	return await res.json();
+        return jsonResponse;
+    } catch (error) {
+        console.error('Fetch error:', error);
+        return { error: error.message || 'Failed to connect to the server' };
+    }
 }
 
 export async function fetchDelete(relative_url) {
+	debugger;
 	let url = domain.concat(relative_url);
 	const res = await fetch(url, {
 		method: 'DELETE',

@@ -7,6 +7,7 @@ using TheDailyRoutine.Infrastructure.Extensions;
 using TheDailyRoutine.Core.Extensions;
 using TheDailyRoutine.Core.Services;
 using Microsoft.EntityFrameworkCore;
+using TheDailyRoutine.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -137,6 +138,8 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllers();
+
 // Configure recurring jobs
 RecurringJob.AddOrUpdate<NotificationJobService>(
     "daily-reminders",
@@ -154,6 +157,7 @@ RecurringJob.AddOrUpdate<NotificationJobService>(
     "*/5 * * * *");
 
 // Map endpoints
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

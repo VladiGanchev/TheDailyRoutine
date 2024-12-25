@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TheDailyRoutine.Core.Contracts;
+using TheDailyRoutine.Core.Models.API.Requests;
 using TheDailyRoutine.Core.Models.ServiceModels;
 using TheDailyRoutine.Core.Models.ServiceModels.Habits;
 using TheDailyRoutine.Infrastructure.Data.Models;
 
 namespace TheDailyRoutine.Controllers.API
 {
+    [Route("api/habits")]
     public class HabitsAPIController : BaseAPIController
     {
         private readonly IHabitService _habitService;
@@ -14,7 +17,6 @@ namespace TheDailyRoutine.Controllers.API
         private readonly ICompletionService _completionService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<HabitsAPIController> _logger;
-
         public HabitsAPIController(
             IHabitService habitService,
             IUserHabitService userHabitService,
@@ -43,20 +45,43 @@ namespace TheDailyRoutine.Controllers.API
                 return Error("Failed to retrieve predefined habits");
             }
         }
+        [HttpGet("debug")]
+        public async Task<IActionResult> DebugAuth()
+        {
+            var userId = _userManager.GetUserId(User);
+            var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+            var habits = await _userHabitService.GetUserHabitsAsync(userId);
+
+            return Ok(new
+            {
+                userId,
+                isAuthenticated,
+                claims = User.Claims.Select(c => new { c.Type, c.Value })
+               , habits
+            });
+        }
+
 
         [HttpGet("my")]
         public async Task<IActionResult> GetMyHabits()
         {
+            // todo: service validation method? 
+
             try
             {
                 var userId = _userManager.GetUserId(User);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("User not authenticated");
+                }
+
                 var habits = await _userHabitService.GetUserHabitsAsync(userId);
-                return Success(habits);
+                return Ok(new { success = true, data = habits }); // Ensure consistent JSON structure
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving user habits");
-                return Error("Failed to retrieve your habits");
+                return BadRequest(new { success = false, error = "Failed to retrieve your habits" });
             }
         }
 
@@ -150,6 +175,41 @@ namespace TheDailyRoutine.Controllers.API
             {
                 _logger.LogError(ex, "Error retrieving today's habits");
                 return Error("Failed to retrieve today's habits");
+            }
+        }
+
+        [HttpPost("assign")]
+        public async Task<IActionResult> AssignHabit([FromBody] AssignHabitRequest model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidationError();
+            }
+
+            try
+            {
+                var userId = _userManager.GetUserId(User);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("User not authenticated");
+                }
+
+                var (success, error) = await _userHabitService.AddHabitToUserAsync(
+                    userId,
+                    model.HabitId,
+                    model.Frequency);
+
+                if (!success)
+                {
+                    return Error(error);
+                }
+
+                return Success("Habit assigned successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error assigning habit to user");
+                return Error("Failed to assign habit");
             }
         }
     }
