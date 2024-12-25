@@ -8,6 +8,7 @@
 	let password = '';
 	let confirmPassword = '';
 	let errorMessage = '';
+	let isLoading = false; 
 
 	let showPassword = false;
 	let showConfirmPassword = false;
@@ -27,30 +28,42 @@
 	};
 
 	const handleRegister = async () => {
-		// Reset error message
+    
+		// Reset error message annd loading to true
 		errorMessage = '';
+		isLoading = true; 
 
-		// Validation Logic
-		if (!email || !username || !password || !confirmPassword) {
-			errorMessage = 'All fields are required.';
-		} else if (password !== confirmPassword) {
-			errorMessage = 'Passwords do not match.';
-		} else if (!isValidEmail(email)) {
-			errorMessage = 'Please enter a valid email address.';
-		} else {
-			const body = {
-				username: username,
-				password: password,
-			}
-			const response = await fetchPost("/api/auth/register", body)
-			if (response.token) {
-				login(response);
-				navigateTo("/today")
-			} else {
-				errorMessage = response.error;
-			}
-		}
-	};
+    // Validation Logic
+    if (!email || !username || !password || !confirmPassword) {
+        errorMessage = 'All fields are required.';
+    } else if (password !== confirmPassword) {
+        errorMessage = 'Passwords do not match.';
+    } else if (!isValidEmail(email)) {
+        errorMessage = 'Please enter a valid email address.';
+    } else {
+        const body = {
+            email: email,      // Added email
+            username: username,
+            password: password,
+            confirmPassword: confirmPassword  // Added confirmPassword
+        }
+        try {
+            const response = await fetchPost("/api/authAPI/register", body)  // Updated endpoint
+            if (response.token) {
+                login(response);
+                navigateTo("#/today")
+            } else {
+                errorMessage = response.error || 'Registration failed';
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            errorMessage = 'An unexpected error occurred';
+        }
+		finally {
+        isLoading = false;  
+    }
+    }
+};
 </script>
 
 <form autocomplete="off" class="register-form" on:submit|preventDefault={handleRegister}>
@@ -128,10 +141,42 @@
 		</div>
 	</div>
 
-	<button type="submit" class="register-button">Register</button>
+	<button 
+    type="submit" 
+    class="register-button" 
+    disabled={isLoading}>
+    {isLoading ? 'Registering...' : 'Register'}
+
+	
+</button>
+<div class="auth-links">
+    <a href="/#/login">Already have an account? Login</a>
+</div>
 </form>
 
+
 <style>
+
+.auth-links {
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .auth-links a {
+        color: #60a5fa;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+
+	.register-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #4b5563;
+}
     .register-form {
         display: flex;
         flex-direction: column;

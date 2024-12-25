@@ -3,30 +3,45 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDailyRoutine", "TheDailyRoutine\TheDailyRoutine.csproj", "{15432048-B9C5-4175-AFB3-D130E4B9277F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDailyRoutine", "TheDailyRoutine\TheDailyRoutine.csproj", "{15432048-B9C5-4175-AFB3-D130E4B9277F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDailyRoutine.Core", "TheDailyRoutine.Core\TheDailyRoutine.Core.csproj", "{85117C84-8802-4741-8712-AB594125E720}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDailyRoutine.Core", "TheDailyRoutine.Core\TheDailyRoutine.Core.csproj", "{85117C84-8802-4741-8712-AB594125E720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDailyRoutine.Infrastructure", "TheDailyRoutine.Infrastructure\TheDailyRoutine.Infrastructure.csproj", "{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDailyRoutine.Infrastructure", "TheDailyRoutine.Infrastructure\TheDailyRoutine.Infrastructure.csproj", "{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDailyRoutine.Common", "TheDailyRoutine.Common\TheDailyRoutine.Common.csproj", "{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{15432048-B9C5-4175-AFB3-D130E4B9277F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15432048-B9C5-4175-AFB3-D130E4B9277F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15432048-B9C5-4175-AFB3-D130E4B9277F}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{15432048-B9C5-4175-AFB3-D130E4B9277F}.Development|Any CPU.Build.0 = Development|Any CPU
 		{15432048-B9C5-4175-AFB3-D130E4B9277F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15432048-B9C5-4175-AFB3-D130E4B9277F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85117C84-8802-4741-8712-AB594125E720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85117C84-8802-4741-8712-AB594125E720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85117C84-8802-4741-8712-AB594125E720}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{85117C84-8802-4741-8712-AB594125E720}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{85117C84-8802-4741-8712-AB594125E720}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85117C84-8802-4741-8712-AB594125E720}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}.Development|Any CPU.Build.0 = Development|Any CPU
 		{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9170D4CB-6A7D-41AD-A20C-EB00B18E6FB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FD5105B-EEFC-46FA-AF77-6A505C9FE29F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

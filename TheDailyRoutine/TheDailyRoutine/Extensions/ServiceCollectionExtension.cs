@@ -1,41 +1,45 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using TheDailyRoutine.Infrastructure.Data;
+using TheDailyRoutine.Infrastructure.Data.Models;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace TheDailyRoutine.Extensions
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            return services;
-        }
-
-        public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddApplicationDbContext(
+            this IServiceCollection services,
+            IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
 
             return services;
         }
 
-        public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
+       /* public static IServiceCollection AddApplicationIdentity(
+            this IServiceCollection services,
+            IConfiguration config)
         {
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequiredLength = 6;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
 
             return services;
-        }
+        }*/
     }
 }
