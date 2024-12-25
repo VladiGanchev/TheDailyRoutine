@@ -116,7 +116,7 @@ namespace TheDailyRoutine.Core.Services
                     Description = uh.Habit.Description,
                     Frequency = uh.Frequency,
                     CreatedAt = uh.CreatedAt,
-                    CurrentStreak = CalculateCurrentStreak(uh.Completions),
+                   /* CurrentStreak = CalculateCurrentStreak(uh.Completions),
                     BestStreak = CalculateBestStreak(uh.Completions),
                     CompletionRate = CalculateCompletionRate(uh.Completions),
                     RecentCompletions = uh.Completions
@@ -128,7 +128,7 @@ namespace TheDailyRoutine.Core.Services
                             CompletedAt = c.CompletedAt,
                             Completed = c.Completed,
                             Notes = c.Notes
-                        })
+                        })*/
                 })
                 .OrderBy(h => h.Title)
                 .ToListAsync();

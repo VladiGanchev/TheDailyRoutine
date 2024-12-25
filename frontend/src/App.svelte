@@ -6,6 +6,8 @@
 	import { navigateTo } from './js/helpers.js';
 
 	// Route imports
+	import Login from "./authentication/Login.svelte";
+ 	 import Register from "./authentication/Register.svelte";
 	import Home from "./Home.svelte";
 	import MyAccount from "./account/MyAccount.svelte";
 	import Calendar from "./calendar/Calendar.svelte";
@@ -36,6 +38,8 @@
 
 	// Define the route configuration
 	const routes = {
+		"/login": Login,
+        "/register": Register,
 	"/": Home,
 	"/account": wrap({
 	component: LeftNavBar,
