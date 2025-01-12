@@ -1,152 +1,203 @@
 <script>
-	import { fetchPost } from '../js/fetch.js';
-	import { login } from '../js/stores.js';
-	import { navigateTo } from '../js/helpers.js';
+    import { fetchPost } from '../js/fetch.js';
+    import { login } from '../js/stores.js';
+    import { navigateTo } from '../js/helpers.js';
 
-	let username = '';
-	let password = '';
-	let errorMessage = '';
+    let identifier = '';
+    let password = '';
+    let errorMessage = '';
+    let isLoading = false;
 
-	let showPassword = false;
+    let showPassword = false;
 
-	const togglePasswordVisibility = () => {
-		showPassword = !showPassword;
-	};
+    const togglePasswordVisibility = () => {
+        showPassword = !showPassword;
+    };
 
-	const handleLogin = async () => {
-		errorMessage = '';
+    const handleLogin = async () => {
+        errorMessage = '';
+        isLoading = true;
 
-		if (!username || !password) {
-			errorMessage = 'All fields are required.';
-		} else {
-			const body = {
-				username: username,
-				password: password,
-			}
-			const response = await fetchPost("/api/auth/login", body)
-			if (response.token) {
-				login(response);
-				navigateTo("/today")
-			} else {
-				errorMessage = response.error;
-			}
-		}
-	};
+        try {
+            if (!identifier || !password) {
+                errorMessage = 'All fields are required.';
+                return;
+            }
+
+            const response = await fetchPost("/api/authAPI/login", {
+                identifier: identifier,
+                password: password
+            });
+
+            if (response.token) {
+                login(response);
+                navigateTo("#/today");
+            } else {
+                errorMessage = response.error || 'Login failed';
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            errorMessage = 'An unexpected error occurred';
+        } finally {
+            isLoading = false;
+        }
+    };
 </script>
 
-<form autocomplete="off" class="login-form" on:submit|preventDefault={handleLogin}>
-	{#if errorMessage}
-		<div class="error-message">{errorMessage}</div>
-	{/if}
+<div class="auth-container">
+    <form on:submit|preventDefault={handleLogin} class="auth-form">
+        <h2>Login</h2>
+        
+        {#if errorMessage}
+            <div class="error-message">{errorMessage}</div>
+        {/if}
 
-	<div class="input-group">
-		<label for="username">Username</label>
-		<input
-			type="text"
-			id="username"
-			placeholder="Enter your username"
-			bind:value={username}
-		/>
-	</div>
+        <div class="input-group">
+            <label for="identifier">identifier</label>
+            <input
+                type="identifier"
+                id="identifier"
+                bind:value={identifier}
+                placeholder="Enter your identifier"
+                required
+            />
+        </div>
 
-	<div class="input-group">
-		<label for="password">Password</label>
-		<div class="input-group password-wrapper">
-			<input
-				type={showPassword ? 'text' : 'password'}
-				id="password"
-				placeholder="Enter your password"
-				autocomplete="new-password"
-				bind:value={password}
-			/>
-			<button
-				type="button"
-				class="toggle-icon"
-				on:click={togglePasswordVisibility}
-				aria-label="Toggle Password Visibility"
-			>
-				{#if showPassword}
-					👁️‍🗨️
-				{:else}
-					👁️
-				{/if}
-			</button>
-	</div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-input">
+                <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    bind:value={password}
+                    placeholder="Enter your password"
+                    required
+                />
+                <button
+                    type="button"
+                    class="toggle-password"
+                    on:click={togglePasswordVisibility}
+                >
+                    {showPassword ? '👁️‍🗨️' : '👁️'}
+                </button>
+            </div>
+        </div>
 
-	</div>
+        <button type="submit" class="submit-button" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Log In'}
+        </button>
 
-	<button type="submit" class="login-button">Log In</button>
-</form>
+        <div class="auth-links">
+			<a href="/#/register">Don't have an account? Register</a>
+        </div>
+    </form>
+</div>
 
 <style>
-    .login-form {
+    .auth-container {
         display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 100px);
+        padding: 1rem;
+    }
+
+    .auth-form {
+        background: #1a1a1a;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #fff;
     }
 
     .input-group {
-        display: flex;
-        flex-direction: column;
-				text-align: left;
+        margin-bottom: 1.5rem;
     }
 
     .input-group label {
+        display: block;
         margin-bottom: 0.5rem;
-        font-weight: bold;
         color: #b0b0b0;
     }
 
-    .input-group input {
+    input {
+        width: 100%;
         padding: 0.75rem;
-        border: 1px solid #444;
-        border-radius: 6px;
-        background-color: #2e2e2e;
+        border: 1px solid #333;
+        border-radius: 4px;
+        background: #2a2a2a;
+        color: #fff;
     }
 
-    .input-group input:focus {
+    input:focus {
         outline: none;
         border-color: #3b82f6;
-        box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     }
 
-    .password-wrapper {
+    .password-input {
         position: relative;
     }
 
-    .toggle-icon {
+    .toggle-password {
         position: absolute;
-        right: 6px;
-				top: 6px;
-        background: transparent;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
         border: none;
         cursor: pointer;
-        font-size: 1.3rem;
+        padding: 0;
+        font-size: 1.25rem;
     }
 
-    .toggle-icon:focus {
-        outline: none;
-    }
-
-    .login-button {
-        background-color: #2563eb;
-        border: none;
+    .submit-button {
+        width: 100%;
         padding: 0.75rem;
-        font-size: 1rem;
-        border-radius: 6px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 4px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        font-size: 1rem;
+        transition: background-color 0.2s;
     }
 
-    .login-button:hover {
-        background-color: #3b82f6;
+    .submit-button:hover:not(:disabled) {
+        background: #2563eb;
+    }
+
+    .submit-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
     }
 
     .error-message {
-        color: #f87171;
-        background-color: #2e2e2e;
-        padding: 0.5rem;
-        border-radius: 5px;
-        font-weight: bold;
+        background: #dc2626;
+        color: white;
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .auth-links {
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .auth-links a {
+        color: #3b82f6;
+        text-decoration: none;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
     }
 </style>
