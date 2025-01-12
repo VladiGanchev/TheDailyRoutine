@@ -76,7 +76,7 @@ namespace TheDailyRoutine.Controllers.API
                 }
 
                 var habits = await _userHabitService.GetUserHabitsAsync(userId);
-                return Ok(new { success = true, data = habits }); // Ensure consistent JSON structure
+                return Ok(new { success = true, data = habits }); 
             }
             catch (Exception ex)
             {
@@ -85,8 +85,9 @@ namespace TheDailyRoutine.Controllers.API
             }
         }
 
-        [HttpPost("add")]
-        public async Task<IActionResult> AddHabit([FromBody] AddHabitServiceModel model)
+        [Authorize(Roles = "Admin")]  
+        [HttpPost("predefined")]      
+        public async Task<IActionResult> AddPredefinedHabit([FromBody] AddHabitServiceModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -99,17 +100,23 @@ namespace TheDailyRoutine.Controllers.API
 
                 if (!success)
                 {
+                    _logger.LogWarning("Failed to add predefined habit: {Error}", error);
                     return Error(error);
                 }
+
+                _logger.LogInformation("Admin {UserId} added new predefined habit: {Title}",
+                    _userManager.GetUserId(User),
+                    model.Title);
 
                 return Success(new { habitId });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding habit");
-                return Error("Failed to add habit");
+                _logger.LogError(ex, "Error adding predefined habit");
+                return Error("An error occurred while adding the predefined habit");
             }
         }
+
 
         [HttpPost("complete/{habitId}")]
         public async Task<IActionResult> CompleteHabit(int habitId, [FromBody] string notes = "")
@@ -212,5 +219,51 @@ namespace TheDailyRoutine.Controllers.API
                 return Error("Failed to assign habit");
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("predefined/{id}")]
+        public async Task<IActionResult> UpdatePredefinedHabit(int id, [FromBody] EditHabitServiceModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidationError();
+            }
+
+            if (id != model.Id)
+            {
+                return ValidationError("ID in URL does not match ID in request body");
+            }
+
+            try
+            {
+                var (success, error) = await _habitService.UpdatePredefinedHabitAsync(model);
+
+                if (!success)
+                {
+                    _logger.LogWarning("Failed to update predefined habit: {Error}", error);
+                    return Error(error);
+                }
+
+                // Get the updated habit to return in response
+                var updatedHabit = await _habitService.GetHabitByIdAsync(id);
+                if (updatedHabit == null)
+                {
+                    return NotFoundError("Updated habit not found");
+                }
+
+                _logger.LogInformation("Admin {UserId} updated predefined habit {HabitId}: {Title}",
+                    _userManager.GetUserId(User),
+                    id,
+                    model.Title);
+
+                return Success(updatedHabit);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating predefined habit");
+                return Error("Failed to update habit");
+            }
+        }
+
     }
 }
