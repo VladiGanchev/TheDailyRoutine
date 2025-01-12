@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using TheDailyRoutine.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using TheDailyRoutine.Models;
 
 namespace TheDailyRoutine.Controllers.API
 {
@@ -32,7 +33,7 @@ namespace TheDailyRoutine.Controllers.API
                 return BadRequest(new ErrorResponse { Error = "Invalid request" });
             }
 
-            var user = new ApplicationUser { UserName = request.Identifier, Email = request.Identifier };
+            var user = new ApplicationUser { UserName = request.Username, Email = request.Email };
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (result.Succeeded)
@@ -91,25 +92,6 @@ namespace TheDailyRoutine.Controllers.API
 
             return BadRequest(new ErrorResponse { Error = "Invalid username/email or password" });
         }
-    }
-
-    public class RegisterRequest
-    {
-        public string Identifier { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
-    }
-
-    public class LoginRequest
-    {
-        public string Identifier { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class AuthResponse
-    {
-        public string Token { get; set; }
-        public string Username { get; set; }
     }
 
     public class ErrorResponse
