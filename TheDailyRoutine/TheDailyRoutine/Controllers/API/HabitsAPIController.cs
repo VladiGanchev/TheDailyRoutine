@@ -85,7 +85,7 @@ namespace TheDailyRoutine.Controllers.API
             }
         }
 
-        [Authorize(Roles = "Admin")]  
+        // [Authorize(Roles = "Admin")]  
         [HttpPost("predefined")]      
         public async Task<IActionResult> AddPredefinedHabit([FromBody] AddHabitServiceModel model)
         {

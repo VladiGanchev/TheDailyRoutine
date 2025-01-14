@@ -12,7 +12,9 @@ namespace TheDailyRoutine.Core.Models.ServiceModels.Completions
     {
         public int Id { get; set; }
 
-        public int UserHabitId { get; set; }
+        public int UserHabitHabitId { get; set; }
+
+        public string UserHabitUserId { get; set; } = string.Empty;
 
         [Required]
         public DateTime CompletedAt { get; set; }

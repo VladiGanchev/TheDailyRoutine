@@ -11,6 +11,7 @@
         try {
             const response = await fetchGet('/api/habits/my');
             habits = response.data || [];
+            console.log(habits);
             loading = false;
         } catch (err) {
             error = 'Failed to load habits';
@@ -70,20 +71,6 @@
                 <div class="habit-card" style="box-shadow: {getGlowColor(habit.currentStreak, false)};">
                     <div class="habit-header">
                         <h3>{habit.title}</h3>
-                        <div class="habit-actions">
-                            <button 
-                                class="edit-btn" 
-                                on:click={() => navigateTo(`/edit-habit/${habit.habitId}`)}
-                            >
-                                Edit
-                            </button>
-                            <button 
-                                class="remove-btn" 
-                                on:click={() => removeHabit(habit.habitId)}
-                            >
-                                Remove
-                            </button>
-                        </div>
                     </div>
 
                     <p class="description">{habit.description}</p>
@@ -91,8 +78,8 @@
                     <div class="stats">
                         <div class="stat">
                             <span class="label">Frequency:</span>
-                            <span class="value">{habit.frequency === 1 ? 'Daily' : 
-                                               habit.frequency === 7 ? 'Weekly' : 'Monthly'}</span>
+                            <span class="value">{habit.frequency === 1 ? 'Daily' :
+                                habit.frequency === 7 ? 'Weekly' : 'Monthly'}</span>
                         </div>
                         <div class="stat">
                             <span class="label">Current Streak:</span>
@@ -114,12 +101,12 @@
                             <div class="completion-list">
                                 {#each habit.recentCompletions as completion}
                                     <div class="completion-item">
-                                        <span class="completion-date">
-                                            {formatDate(completion.completedAt)}
-                                        </span>
+                            <span class="completion-date">
+                                {formatDate(completion.completedAt)}
+                            </span>
                                         <span class="completion-status" class:completed={completion.completed}>
-                                            {completion.completed ? '✓' : '×'}
-                                        </span>
+                                {completion.completed ? '✓' : '×'}
+                            </span>
                                         {#if completion.notes}
                                             <span class="completion-notes">{completion.notes}</span>
                                         {/if}
@@ -128,6 +115,21 @@
                             </div>
                         </div>
                     {/if}
+
+                    <div class="habit-actions">
+                        <button
+                            class="edit-btn"
+                            on:click={() => navigateTo(`/edit-habit/${habit.habitId}`)}
+                        >
+                            Edit
+                        </button>
+                        <button
+                            class="remove-btn"
+                            on:click={() => removeHabit(habit.habitId)}
+                        >
+                            Remove
+                        </button>
+                    </div>
                 </div>
             {/each}
         </div>
@@ -136,23 +138,31 @@
 
 <style>
     .habits-container {
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
+        overflow-y: auto;
+        height: 100vh;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .habits-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .habits-grid {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        overflow-y: auto;
     }
 
     h1 {
         font-size: 2rem;
-        margin-bottom: 2rem;
+        margin: 2rem 0;
         color: #fff;
         text-align: center;
-    }
-
-    .habits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-        padding: 1rem;
     }
 
     .habit-card {
@@ -161,10 +171,14 @@
         padding: 1.5rem;
         transition: transform 0.2s ease-in-out;
         border: 1px solid #333;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 25%;
     }
 
     .habit-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-1px);
     }
 
     .habit-header {
@@ -182,7 +196,8 @@
 
     .habit-actions {
         display: flex;
-        gap: 0.5rem;
+        justify-content: space-between;
+        margin-top: 1.5rem;
     }
 
     .edit-btn, .remove-btn {
@@ -192,6 +207,8 @@
         cursor: pointer;
         font-size: 0.9rem;
         transition: background-color 0.2s;
+        flex: 1;
+        margin: 0 0.5rem;
     }
 
     .edit-btn {
@@ -214,6 +231,7 @@
         color: #aaa;
         margin-bottom: 1.5rem;
         font-size: 0.9rem;
+        height: 3rem;
     }
 
     .stats {

@@ -1,4 +1,6 @@
 <script>
+  	import './auth.css';
+
 	import { fetchPost } from '../js/fetch.js';
 	import { login } from '../js/stores.js';
 	import { navigateTo } from '../js/helpers.js';
@@ -28,45 +30,44 @@
 	};
 
 	const handleRegister = async () => {
-    
-		// Reset error message annd loading to true
+		// Reset error message and loading to true
 		errorMessage = '';
 		isLoading = true; 
 
-    // Validation Logic
-    if (!email || !username || !password || !confirmPassword) {
-        errorMessage = 'All fields are required.';
-    } else if (password !== confirmPassword) {
-        errorMessage = 'Passwords do not match.';
-    } else if (!isValidEmail(email)) {
-        errorMessage = 'Please enter a valid email address.';
-    } else {
-        const body = {
-            email: email,      // Added email
-            username: username,
-            password: password,
-            confirmPassword: confirmPassword  // Added confirmPassword
-        }
-        try {
-            const response = await fetchPost("/api/authAPI/register", body)  // Updated endpoint
-            if (response.token) {
-                login(response);
-                navigateTo("#/today")
-            } else {
-                errorMessage = response.error || 'Registration failed';
-            }
-        } catch (error) {
-            console.error('Registration error:', error);
-            errorMessage = 'An unexpected error occurred';
-        }
-		finally {
-        isLoading = false;  
-    }
-    }
-};
+		// Validation Logic
+		if (!email || !username || !password || !confirmPassword) {
+			errorMessage = 'All fields are required.';
+		} else if (password !== confirmPassword) {
+			errorMessage = 'Passwords do not match.';
+		} else if (!isValidEmail(email)) {
+			errorMessage = 'Please enter a valid email address.';
+		} else {
+			const body = {
+				email: email,
+				username: username,
+				password: password,
+				confirmPassword: confirmPassword
+			}
+			try {
+				const response = await fetchPost("/api/authAPI/register", body)  // Updated endpoint
+				if (response.token) {
+					login(response);
+					navigateTo("#/today")
+				} else {
+					errorMessage = response.error || 'Registration failed';
+				}
+			} catch (error) {
+				console.error('Registration error:', error);
+				errorMessage = 'An unexpected error occurred';
+			}
+			finally {
+				isLoading = false;
+			}
+		}
+	};
 </script>
 
-<form autocomplete="off" class="register-form" on:submit|preventDefault={handleRegister}>
+<form autocomplete="off" class="auth-form" on:submit|preventDefault={handleRegister}>
 	{#if errorMessage}
 		<div class="error-message">{errorMessage}</div>
 	{/if}
@@ -142,109 +143,9 @@
 	</div>
 
 	<button 
-    type="submit" 
-    class="register-button" 
-    disabled={isLoading}>
-    {isLoading ? 'Registering...' : 'Register'}
-
-	
-</button>
-<div class="auth-links">
-    <a href="/#/login">Already have an account? Login</a>
-</div>
+    	type="submit"
+    	class="submit-button"
+    	disabled={isLoading}>
+    	{isLoading ? 'Registering...' : 'Register'}
+	</button>
 </form>
-
-
-<style>
-
-.auth-links {
-        margin-top: 1rem;
-        text-align: center;
-    }
-
-    .auth-links a {
-        color: #60a5fa;
-        text-decoration: none;
-        font-size: 0.9rem;
-    }
-
-    .auth-links a:hover {
-        text-decoration: underline;
-    }
-
-	.register-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    background-color: #4b5563;
-}
-    .register-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .input-group {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-    }
-
-    .input-group label {
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-        color: #b3b3b3;
-    }
-
-    .input-group input {
-        padding: 0.75rem;
-        border: 1px solid #444;
-        border-radius: 5px;
-        background-color: #2e2e2e;
-    }
-
-    .input-group input:focus {
-        outline: none;
-        border-color: #60a5fa;
-        box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
-    }
-
-    .password-wrapper {
-        position: relative;
-    }
-
-    .toggle-icon {
-        position: absolute;
-        right: 6px;
-        top: 6px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        font-size: 1.3rem;
-    }
-
-    .toggle-icon:focus {
-        outline: none;
-    }
-
-    .register-button {
-        background-color: #2563eb;
-        border: none;
-        padding: 0.75rem;
-        font-size: 1rem;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .register-button:hover {
-        background-color: #3b82f6;
-    }
-
-    .error-message {
-        color: #f87171;
-        background-color: #2e2e2e;
-        padding: 0.5rem;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-</style>

@@ -15,29 +15,14 @@
 		if (!title || !description) {
 			errorMessage = 'Title and Description are required.';
 		} else {
-			// Create habit if it doesn't exist
-			if (id === -1) {
-				const newHabitBody = {
-					Title: title,
-					Description: description,
-				}
-				const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
-				if (!newHabitResponse.success) {
-					errorMessage = newHabitResponse.message;
-					return;
-				}
-				id = newHabitResponse.data.habitId;
-			}
-
-			// Add habit to user
 			let freq = parseInt(frequency);
-			const assignedHabitBody = {
+			const newHabit = {
 				HabitId: id,
 				Frequency: freq,
 			};
-			const assignedHabitResponse = await fetchPost("/api/habits/assign", assignedHabitBody);
-			if (!assignedHabitResponse.success) {
-				errorMessage = assignedHabitBody.message;
+			const response = await fetchPost("/api/habits/assign", newHabit);
+			if (response.error) {
+				errorMessage = response.error;
 			} else {
 				navigateTo("/my-habits")
 			}
@@ -125,8 +110,8 @@
 
     form {
         width: 100%;
-				display: flex;
-				flex-direction: column;
+        display: flex;
+        flex-direction: column;
     }
 
     h2 {
