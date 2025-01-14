@@ -3,7 +3,6 @@
 		{ name: "Today", path: "/#/today" },
 		{ name: "Calendar", path: "/#/calendar" },
 		{ name: "My Habits", path: "/#/my-habits" },
-		{ name: "Statistics", path: "/#/statistics" }
 	];
 
 	let add_habits_selector = [
@@ -12,7 +11,6 @@
 	];
 
 	let settings = [
-		{ name: "Account", path: "/#/account" },
 		{ name: "Logout", path: "/#/logout" }
 	];
 

@@ -1,8 +1,10 @@
 <script>
 	import { onMount } from "svelte";
-	import Today from "./Today.svelte"; // Import the Today component
+	import Today from "./Today.svelte";
+	import { fetchGet } from '../js/fetch.js'; // Import the Today component
 
-	let currentMonth = new Date();
+	let history = [];
+	let currentDate = new Date();
 	let daysInMonth = [];
 	let monthTitle = "";
 	let selectedDate = null; // Track the selected date
@@ -11,14 +13,27 @@
 
 	const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-	onMount(() => {
-		updateCalendar(currentMonth);
+	onMount(async () => {
+		await getMonthlyHistory();
+		updateCalendar(currentDate);
 	});
 
 	const updateCalendar = (date) => {
 		monthTitle = date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 		daysInMonth = getDaysForMonth(date);
 	};
+
+	const getMonthlyHistory = async () => {
+		const date = new Date();
+		const startDate = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
+		const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
+		const historyResponse = await fetchGet(`/api/completions/history?startDate=${startDate}&endDate=${endDate}`);
+		if (historyResponse.success) {
+			history = historyResponse.data || [];
+		} else {
+			console.log(historyResponse.message);
+		}
+	}
 
 	const getDaysForMonth = (date) => {
 		const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -30,7 +45,11 @@
 
 		// Fill in the days of the current month
 		for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
-			days.push({ date: i, isCurrentMonth: true });
+			days.push({
+				date: i,
+				isCurrentMonth: true,
+				completedHabitsCount: getCompletedHabitsCountForDate(i),
+			});
 		}
 
 		// Add padding for days before the start of the month
@@ -52,46 +71,35 @@
 			rows.push(row); // Push any remaining incomplete row
 		}
 
-		// If there are 6 rows, move the last row to the start of the first row
-		if (rows.length === 6) {
-			const lastRow = rows.pop();
-			const firstRow = rows[0];
-
-			// Take the last few days (30, 31) and merge them with the first row
-			const lastDays = lastRow.filter(day => day.date !== null);
-
-			if (lastDays.length > 0) {
-				lastDays.forEach((day, index) => {
-					rows[0][index] = day;
-				})
-			}
-		}
-
 		return rows;
 	};
 
+	const getCompletedHabitsCountForDate = (day) => {
+		let count = 0;
+		history.forEach((habitCompletion) => {
+			const completed = habitCompletion.completed;
+			const date = new Date(Date.parse(habitCompletion.completedAt)).getDate();
+			if (completed && date === day) {
+				count++;
+			}
+		});
+		return count;
+	};
+
 	const goToPreviousMonth = () => {
-		currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
-		updateCalendar(currentMonth);
+		currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+		updateCalendar(currentDate);
 	};
 
 	const goToNextMonth = () => {
-		currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
-		updateCalendar(currentMonth);
+		currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+		updateCalendar(currentDate);
 	};
 
 	const handleDayClick = (day) => {
-		selectedDate = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}-${day.date}`;
-		selectedHabits = getHabitsForDate(day.date); // Replace with actual habit data if available
+		selectedDate = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day.date}`);
+		console.log(selectedDate);
 		showCalendar = false; // Hide the calendar and show the "Today" component
-	};
-
-	const getHabitsForDate = (day) => {
-		// For demonstration, return some static habits. Replace with your actual logic for habits.
-		return [
-			`Habit 1 for day ${day}`,
-			`Habit 2 for day ${day}`,
-		];
 	};
 
 	const goBackToCalendar = () => {
@@ -118,12 +126,14 @@
 			{#each daysInMonth as row}
 				<div class="calendar-row">
 					{#each row as day}
-						<div class="calendar-cell {day.isCurrentMonth ? '' : 'empty'}" on:click={() => handleDayClick(day)}>
+						<div
+							class="calendar-cell {day.isCurrentMonth ? '' : 'empty'}"
+							on:click={() => handleDayClick(day)}
+						>
 							{#if day.isCurrentMonth}
 								<div class="date">{day.date}</div>
-								<div class="habit-indicators">
-									<div class="habit-box" style="background-color: red;"></div>
-									<div class="habit-box" style="background-color: green;"></div>
+								<div class="completed-habits">
+									{day.completedHabitsCount} Completed
 								</div>
 							{/if}
 						</div>
@@ -134,8 +144,10 @@
 	</div>
 {:else}
 	<!-- Today view -->
-	<Today selectedDate={selectedDate} habits={selectedHabits} />
-	<button on:click={goBackToCalendar}>Back to Calendar</button>
+	<div class="date-view">
+		<button on:click={goBackToCalendar}>Back to Calendar</button>
+		<Today date={new Date(selectedDate)} habits={selectedHabits} />
+	</div>
 {/if}
 
 <style>
@@ -219,15 +231,9 @@
         font-weight: bold;
     }
 
-    .habit-indicators {
-        display: flex;
-        gap: 0.3rem;
-        justify-content: center;
-    }
-
-    .habit-box {
-        width: 20px;
-        height: 20px;
-        border-radius: 3px;
+    .completed-habits {
+        font-size: 1rem;
+        color: #28a745;
+        font-weight: bold;
     }
 </style>

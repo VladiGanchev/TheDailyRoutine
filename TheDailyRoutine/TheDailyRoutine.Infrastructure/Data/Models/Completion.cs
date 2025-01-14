@@ -12,7 +12,6 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
     public class Completion
     {
         public int Id { get; set; }
-        public int UserHabitId { get; set; }
         public UserHabit UserHabit { get; set; } = null!;
         public DateTime CompletedAt { get; set; }
         public bool Completed { get; set; }

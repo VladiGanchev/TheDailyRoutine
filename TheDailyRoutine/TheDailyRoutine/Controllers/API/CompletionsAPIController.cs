@@ -5,6 +5,7 @@ using TheDailyRoutine.Infrastructure.Data.Models;
 
 namespace TheDailyRoutine.Controllers.API
 {
+    [Route("api/completions")]
     public class CompletionsAPIController : BaseAPIController
     {
         private readonly ICompletionService _completionService;

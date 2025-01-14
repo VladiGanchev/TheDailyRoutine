@@ -36,7 +36,8 @@ namespace TheDailyRoutine.Core.Services
                         Completions = uh.Completions.Select(c => new CompletionServiceModel
                         {
                             Id = c.Id,
-                            UserHabitId = c.UserHabitId,
+                            UserHabitUserId = c.UserHabit.UserId,
+                            UserHabitHabitId = c.UserHabit.HabitId,
                             CompletedAt = c.CompletedAt,
                             Completed = c.Completed,
                             Notes = c.Notes
@@ -91,7 +92,8 @@ namespace TheDailyRoutine.Core.Services
                             Completions = uh.Completions.Select(c => new CompletionServiceModel
                             {
                                 Id = c.Id,
-                                UserHabitId = c.UserHabitId,
+                                UserHabitUserId = c.UserHabit.UserId,
+                                UserHabitHabitId = c.UserHabit.HabitId,
                                 CompletedAt = c.CompletedAt,
                                 Completed = c.Completed,
                                 Notes = c.Notes

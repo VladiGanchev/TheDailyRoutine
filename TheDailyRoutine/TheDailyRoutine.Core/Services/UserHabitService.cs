@@ -116,7 +116,7 @@ namespace TheDailyRoutine.Core.Services
                     Description = uh.Habit.Description,
                     Frequency = uh.Frequency,
                     CreatedAt = uh.CreatedAt,
-                   /* CurrentStreak = CalculateCurrentStreak(uh.Completions),
+                    CurrentStreak = CalculateCurrentStreak(uh.Completions),
                     BestStreak = CalculateBestStreak(uh.Completions),
                     CompletionRate = CalculateCompletionRate(uh.Completions),
                     RecentCompletions = uh.Completions
@@ -128,7 +128,7 @@ namespace TheDailyRoutine.Core.Services
                             CompletedAt = c.CompletedAt,
                             Completed = c.Completed,
                             Notes = c.Notes
-                        })*/
+                        })
                 })
                 .OrderBy(h => h.Title)
                 .ToListAsync();
@@ -276,7 +276,7 @@ namespace TheDailyRoutine.Core.Services
 
         #region Helper Methods
 
-        private int CalculateCurrentStreak(IEnumerable<Completion> completions)
+        private static int CalculateCurrentStreak(IEnumerable<Completion> completions)
         {
             if (!completions.Any())
                 return 0;
@@ -314,7 +314,7 @@ namespace TheDailyRoutine.Core.Services
             return currentStreak;
         }
 
-        private int CalculateBestStreak(IEnumerable<Completion> completions)
+        private static int CalculateBestStreak(IEnumerable<Completion> completions)
         {
             if (!completions.Any())
                 return 0;
@@ -354,7 +354,7 @@ namespace TheDailyRoutine.Core.Services
             return bestStreak;
         }
 
-        private double CalculateCompletionRate(IEnumerable<Completion> completions)
+        private static double CalculateCompletionRate(IEnumerable<Completion> completions)
         {
             if (!completions.Any())
                 return 0;
