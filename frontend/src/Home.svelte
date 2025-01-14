@@ -28,10 +28,17 @@
 	<div class="glow glow-2"></div>
 
 	<div class="card">
-		<h1 class="title">Welcome Back</h1>
-		<p class="description">
-			Log in to continue tracking your habits and improving your daily routine.
-		</p>
+		{#if showRegister}
+			<h1 class="title">Welcome</h1>
+			<p class="description">
+				Register to start tracking your habits and improving your daily routine.
+			</p>
+		{:else}
+			<h1 class="title">Welcome Back</h1>
+			<p class="description">
+				Log in to continue tracking your habits and improving your daily routine.
+			</p>
+		{/if}
 
 		<div class="form-container">
 			{#if showRegister}
@@ -110,9 +117,9 @@
         margin-bottom: 1.5rem;
     }
 
-		.toggle-link {
-				margin-top: 1rem;
-		}
+	.toggle-link {
+			margin-top: 1rem;
+	}
 
     .toggle-link a {
         color: #60a5fa;

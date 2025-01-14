@@ -1,12 +1,9 @@
 <script>
 	import CreateHabit from './CreateHabit.svelte';
+	import { onMount } from 'svelte';
+	import { fetchGet } from '../js/fetch.js';
 
-	let habits = [
-		{ id: 1, title: "Morning Jog", description: "Run for 30 minutes every morning to stay fit." },
-		{ id: 2, title: "Meditation", description: "Meditate for 10 minutes to calm your mind." },
-		{ id: 3, title: "Read a Book", description: "Read 20 pages of any book daily." },
-		{ id: 4, title: "Drink Water", description: "Drink 8 glasses of water a day to stay hydrated." },
-	];
+	let habits = [];
 
 	let selectedHabit = null;
 	let showCreateHabit = false;
@@ -19,6 +16,13 @@
 	const handleCloseForm = () => {
 		showCreateHabit = false;
 	};
+
+	onMount(async () => {
+		const response = await fetchGet("/api/habits/predefined");
+		habits = response.data || [];
+		console.log(habits);
+	});
+
 </script>
 
 <div class="habit-list-container">
@@ -45,7 +49,9 @@
 	{/if}
 
 	{#if showCreateHabit}
+		<button class="go-back-btn" on:click={handleCloseForm}>Go Back</button>
 		<CreateHabit
+			id={selectedHabit.id}
 			title={selectedHabit.title}
 			description={selectedHabit.description}
 			on:closeForm={handleCloseForm}
@@ -57,7 +63,26 @@
     .habit-list-container {
         background-color: #2d2d2d;
         border-radius: 8px;
-				max-width: 85%;
+        max-width: 85%;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 1rem;
+    }
+
+    .go-back-btn {
+        background-color: #2d2d2d;
+        color: #fff;
+        font-size: 1rem;
+        border: 1px solid #1e1e1e;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .go-back-btn:hover {
+        transform: translateY(-1px);
     }
 
     h2 {
@@ -65,14 +90,33 @@
         margin-top: 1rem;
         border-bottom: 1px solid #444;
         padding-bottom: 0.5rem;
-				text-align: center;
+        text-align: center;
     }
 
     .habit-cards {
         display: flex;
         flex-wrap: wrap;
-				max-width: 100%;
         justify-content: center;
+        gap: 1rem;
+        max-width: 100%;
+        overflow-y: auto;
+        max-height: 70vh;
+        padding: 1rem;
+        scrollbar-width: thin;
+        scrollbar-color: #444 #2d2d2d;
+    }
+
+    .habit-cards::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .habit-cards::-webkit-scrollbar-thumb {
+        background-color: #444;
+        border-radius: 4px;
+    }
+
+    .habit-cards::-webkit-scrollbar-track {
+        background-color: #2d2d2d;
     }
 
     .habit-card {
@@ -86,11 +130,11 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 1rem;
-				margin: 1rem;
+        margin: 0;
     }
 
     .habit-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-2px);
         border-color: #00bcd4;
     }
 

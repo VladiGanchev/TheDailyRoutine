@@ -1,9 +1,7 @@
-const domain = 'http://localhost:5271';
-
+const domain = 'http://localhost:7155';
 
 // Fetch get request
 export async function fetchGet(relative_url) {
-	debugger;
 	let url = domain.concat(relative_url);
 
 	const res = await fetch(url, {
@@ -29,7 +27,6 @@ export async function fetchPost(relative_url, data) {
         });
 
         // Check if response is JSON
-        debugger;
         const contentType = res.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
             throw new Error("Response was not JSON");
@@ -49,7 +46,6 @@ export async function fetchPost(relative_url, data) {
 }
 
 export async function fetchDelete(relative_url) {
-	debugger;
 	let url = domain.concat(relative_url);
 	const res = await fetch(url, {
 		method: 'DELETE',

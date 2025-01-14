@@ -45,7 +45,7 @@ namespace TheDailyRoutine.Core.Services
                 {
                     var completion = new Completion
                     {
-                        UserHabitId = userHabit.HabitId,
+                        UserHabit = userHabit,
                         CompletedAt = date,
                         Completed = true,
                         Notes = notes
@@ -101,7 +101,6 @@ namespace TheDailyRoutine.Core.Services
             return await _context.Completions
                 .Include(c => c.UserHabit)
                 .Where(c => c.UserHabit.UserId == userId &&
-                           c.UserHabit.HabitId == habitId &&
                            c.CompletedAt.Date >= startDate.Date &&
                            c.CompletedAt.Date <= endDate.Date)
                 .OrderByDescending(c => c.CompletedAt)
