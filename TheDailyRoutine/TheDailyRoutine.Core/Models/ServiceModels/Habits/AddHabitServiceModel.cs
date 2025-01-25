@@ -14,5 +14,9 @@ namespace TheDailyRoutine.Core.Models.ServiceModels.Habits
             ErrorMessage = DataConstants.StringLengthErrorMessage)]
         public string Description { get; set; } = string.Empty;
 
+        // Добавяме поле за публичност
+        [Required(ErrorMessage = "Public status is required.")]
+        public bool IsPublic { get; set; }  // Поле за публичност
+
     }
 }

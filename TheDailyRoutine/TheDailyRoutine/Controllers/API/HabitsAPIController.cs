@@ -31,12 +31,30 @@ namespace TheDailyRoutine.Controllers.API
             _logger = logger;
         }
 
+
+        [HttpGet("public")]
+        public async Task<IActionResult> GetPublicPredefinedHabits()
+        {
+            try
+            {
+                // Викаме метода за публични предварително дефинирани навици
+                var habits = await _habitService.GetAllPublicPredefinedHabitsAsync();
+                return Success(habits); // Връща публичните навици
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving public predefined habits");
+                return Error("Failed to retrieve public predefined habits");
+            }
+        }
+
         [HttpGet("predefined")]
         public async Task<IActionResult> GetPredefinedHabits()
         {
             try
             {
                 var habits = await _habitService.GetAllPredefinedHabitsAsync();
+
                 return Success(habits);
             }
             catch (Exception ex)
@@ -45,6 +63,8 @@ namespace TheDailyRoutine.Controllers.API
                 return Error("Failed to retrieve predefined habits");
             }
         }
+
+
         [HttpGet("debug")]
         public async Task<IActionResult> DebugAuth()
         {
@@ -96,6 +116,7 @@ namespace TheDailyRoutine.Controllers.API
 
             try
             {
+                // Прехвърляне на IsPublic към сървисния слой
                 var (success, habitId, error) = await _habitService.AddPredefinedHabitAsync(model);
 
                 if (!success)
@@ -252,7 +273,7 @@ namespace TheDailyRoutine.Controllers.API
                 }
 
                 _logger.LogInformation("Admin {UserId} updated predefined habit {HabitId}: {Title}",
-                    _userManager.GetUserId(User),
+                    _userManager.GetUserId(User),   
                     id,
                     model.Title);
 

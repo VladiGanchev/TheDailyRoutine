@@ -3,6 +3,8 @@
 	import { navigateTo } from '../js/helpers.js';
 
 	let frequency = '1';
+	let isPublic = false; // Нова променлива за публичния статус
+
 
 	let errorMessage = '';
 
@@ -11,38 +13,40 @@
 	export let description;
 
 	const handleSubmit = async () => {
-		// Validate
-		if (!title || !description) {
-			errorMessage = 'Title and Description are required.';
-		} else {
-			// Create habit if it doesn't exist
-			if (id === -1) {
-				const newHabitBody = {
-					Title: title,
-					Description: description,
-				}
-				const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
-				if (!newHabitResponse.success) {
-					errorMessage = newHabitResponse.message;
-					return;
-				}
-				id = newHabitResponse.data.habitId;
-			}
+    // Validate
+    if (!title || !description) {
+        errorMessage = 'Title and Description are required.';
+    } else {
+        // Create habit if it doesn't exist
+        if (id === -1) {
+            const newHabitBody = {
+                Title: title,
+                Description: description,
+                IsPublic: isPublic,  // Изпращаме публичния статус
+            }
+            const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
+            if (!newHabitResponse.success) {
+                errorMessage = newHabitResponse.message;
+                return;
+            }
+            id = newHabitResponse.data.habitId;
+        }
 
-			// Add habit to user
-			let freq = parseInt(frequency);
-			const assignedHabitBody = {
-				HabitId: id,
-				Frequency: freq,
-			};
-			const assignedHabitResponse = await fetchPost("/api/habits/assign", assignedHabitBody);
-			if (!assignedHabitResponse.success) {
-				errorMessage = assignedHabitBody.message;
-			} else {
-				navigateTo("/my-habits")
-			}
-		}
-	};
+        // Add habit to user
+        let freq = parseInt(frequency);
+        const assignedHabitBody = {
+            HabitId: id,
+            Frequency: freq,
+        };
+        const assignedHabitResponse = await fetchPost("/api/habits/assign", assignedHabitBody);
+        if (!assignedHabitResponse.success) {
+            errorMessage = assignedHabitBody.message;
+        } else {
+            navigateTo("/my-habits")
+        }
+    }
+};
+
 </script>
 
 <div class="create-habit-form">
