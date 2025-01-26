@@ -23,8 +23,6 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
         public bool Predefined { get; set; }
 
 
-        // поле IsPublic за публичност на навика
-        public bool IsPublic { get; set; }  
 
         public IEnumerable<UserHabit> UsersHabits { get; set; } = new List<UserHabit>();
     }

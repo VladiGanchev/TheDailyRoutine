@@ -61,36 +61,7 @@ namespace TheDailyRoutine.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<HabitServiceModel>> GetAllPublicPredefinedHabitsAsync()
-        {
-            return await _context.Habits
-          .Where(h => h.Predefined && h.IsPublic)  // Филтрираме за публични и предварително дефинирани навици
-          .Select(h => new HabitServiceModel
-          {
-              Id = h.Id,
-              Title = h.Title,
-              Description = h.Description,
-              Predefined = h.Predefined,
-              UsersHabits = h.UsersHabits.Select(uh => new UserHabitServiceModel
-              {
-                  UserId = uh.UserId,
-                  HabitId = uh.HabitId,
-                  Frequency = uh.Frequency,
-                  CreatedAt = uh.CreatedAt,
-                  Completions = uh.Completions.Select(c => new CompletionServiceModel
-                  {
-                      Id = c.Id,
-                      UserHabitUserId = c.UserHabit.UserId,
-                      UserHabitHabitId = c.UserHabit.HabitId,
-                      CompletedAt = c.CompletedAt,
-                      Completed = c.Completed,
-                      Notes = c.Notes
-                  })
-              })
-          })
-          .OrderBy(h => h.Title)
-          .ToListAsync();
-        }
+       
 
        
     public async Task<HabitServiceModel?> GetHabitByIdAsync(int id)
@@ -159,7 +130,7 @@ namespace TheDailyRoutine.Core.Services
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    IsPublic = model.IsPublic  // Добавяме публичността
+                     // Добавяме публичността
                 };
 
                 // Добавяме навика в базата данни

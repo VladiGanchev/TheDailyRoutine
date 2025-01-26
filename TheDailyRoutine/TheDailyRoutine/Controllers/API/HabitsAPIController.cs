@@ -31,20 +31,18 @@ namespace TheDailyRoutine.Controllers.API
             _logger = logger;
         }
 
-
-        [HttpGet("public")]
-        public async Task<IActionResult> GetPublicPredefinedHabits()
+        [HttpGet("{id}/public")]
+        public async Task<IActionResult> GetPublicUserHabits(string id)
         {
             try
             {
-                // Викаме метода за публични предварително дефинирани навици
-                var habits = await _habitService.GetAllPublicPredefinedHabitsAsync();
-                return Success(habits); // Връща публичните навици
+                var habits = await _userHabitService.GetPublicUserHabitsAsync(id);
+                return Success(habits);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving public predefined habits");
-                return Error("Failed to retrieve public predefined habits");
+                _logger.LogError(ex, ex.Message);
+                return Error(ex.Message);
             }
         }
 
@@ -225,7 +223,8 @@ namespace TheDailyRoutine.Controllers.API
                 var (success, error) = await _userHabitService.AddHabitToUserAsync(
                     userId,
                     model.HabitId,
-                    model.Frequency);
+                    model.Frequency,
+                    model.IsPublic);
 
                 if (!success)
                 {

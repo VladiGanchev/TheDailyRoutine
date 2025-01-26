@@ -60,6 +60,5 @@ namespace TheDailyRoutine.Core.Contracts
         /// <summary>
         /// Gets all public predefined habits with their associated user habits
         /// </summary>
-        Task<IEnumerable<HabitServiceModel>> GetAllPublicPredefinedHabitsAsync();
     }
 }
