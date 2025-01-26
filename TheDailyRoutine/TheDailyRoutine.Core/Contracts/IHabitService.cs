@@ -50,9 +50,15 @@ namespace TheDailyRoutine.Core.Contracts
         /// </summary>
         Task<int> GetHabitUserCountAsync(int habitId);
 
+
         /// <summary>
         /// Gets completion statistics for a habit
         /// </summary>
         Task<(int totalCompletions, double completionRate)> GetHabitStatisticsAsync(int habitId);
+
+        //Добавено за публик
+        /// <summary>
+        /// Gets all public predefined habits with their associated user habits
+        /// </summary>
     }
 }

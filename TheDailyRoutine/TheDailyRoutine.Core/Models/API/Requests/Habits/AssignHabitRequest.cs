@@ -14,5 +14,7 @@ namespace TheDailyRoutine.Core.Models.API.Requests
         [Required]
         [Range(1, 30)] // Assuming this is a reasonable range for frequency
         public int Frequency { get; set; }
+        [Required]
+        public bool IsPublic { get; set; }
     }
 }

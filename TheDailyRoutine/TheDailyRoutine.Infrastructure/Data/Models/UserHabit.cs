@@ -24,6 +24,8 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
 
         [Required]
         public DateTime CreatedAt { get; set; }
+        [Required]
+        public bool IsPublic { get; set; } = false;
 
         public ICollection<Completion> Completions { get; set; } = new List<Completion>();
     }

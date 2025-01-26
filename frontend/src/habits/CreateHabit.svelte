@@ -3,6 +3,8 @@
 	import { navigateTo } from '../js/helpers.js';
 
 	let frequency = '1';
+	let isPublic = false; // Нова променлива за публичния статус
+
 
 	let errorMessage = '';
 
@@ -12,24 +14,24 @@
 	export let visability = false;
 
 	const handleSubmit = async () => {
-		// Validate
-		if (!title || !description) {
-			errorMessage = 'Title and Description are required.';
-		} else {
-			// Create habit if it doesn't exist
-			if (id === -1) {
-				const newHabitBody = {
-					Title: title,
-					Description: description,
-				}
-				const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
-				if (!newHabitResponse.success) {
-					errorMessage = newHabitResponse.message;
-					return;
-				}
-				id = newHabitResponse.data.habitId;
-			}
-
+    // Validate
+    if (!title || !description) {
+        errorMessage = 'Title and Description are required.';
+    } else {
+        // Create habit if it doesn't exist
+        if (id === -1) {
+            const newHabitBody = {
+                Title: title,
+                Description: description,
+                IsPublic: isPublic,  // Изпращаме публичния статус
+            }
+            const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
+            if (!newHabitResponse.success) {
+                errorMessage = newHabitResponse.message;
+                return;
+            }
+            id = newHabitResponse.data.habitId;
+        }
 			// Add habit to user
 			let freq = parseInt(frequency);
 			const assignedHabitBody = {

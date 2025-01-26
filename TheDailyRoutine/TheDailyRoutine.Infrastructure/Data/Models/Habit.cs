@@ -22,6 +22,8 @@ namespace TheDailyRoutine.Infrastructure.Data.Models
         [Required]
         public bool Predefined { get; set; }
 
+
+
         public IEnumerable<UserHabit> UsersHabits { get; set; } = new List<UserHabit>();
     }
 }
