@@ -9,6 +9,7 @@
 	export let id = -1;
 	export let title;
 	export let description;
+	export let visability = false;
 
 	const handleSubmit = async () => {
 		// Validate
@@ -34,6 +35,7 @@
 			const assignedHabitBody = {
 				HabitId: id,
 				Frequency: freq,
+				Visability: visability,
 			};
 			const assignedHabitResponse = await fetchPost("/api/habits/assign", assignedHabitBody);
 			if (!assignedHabitResponse.success) {
@@ -108,6 +110,21 @@
 			{/if}
 		</div>
 
+		<div class="form-group">
+			<label for="visability">Frequency</label>
+			{#if id === -1}
+				<select id="visability" bind:value={visability}>
+					<option value='true'>Public</option>
+					<option value='false'>Private</option>
+				</select>
+			{:else}
+				<select id="visability" bind:value={visability} disabled>
+					<option value='true'> Public</option>
+					<option value='false'>Private</option>
+				</select>
+			{/if}
+		</div>
+
 		<button type="submit" class="submit-btn">Create Habit</button>
 	</form>
 </div>
@@ -146,6 +163,7 @@
     }
 
     input, textarea, select {
+		color:#eee;
         width: 100%;
         padding: 0.75rem;
         background-color: #1e1e1e;

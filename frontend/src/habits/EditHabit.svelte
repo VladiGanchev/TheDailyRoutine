@@ -9,6 +9,8 @@
 	export let id = -1;
 	export let title;
 	export let description;
+	export let visability;
+
 
 	const handleSubmit = async () => {
 		// Validate
@@ -19,6 +21,7 @@
 			const newHabit = {
 				HabitId: id,
 				Frequency: freq,
+				Visability: visability,
 			};
 			const response = await fetchPost("/api/habits/assign", newHabit);
 			if (response.error) {
