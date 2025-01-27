@@ -16,9 +16,11 @@
 
   async function fetchUsersAndHabits() {
     try {
-      const usersResponse = await fetchJSON(
-        "http://localhost:7155/api/authAPI/all"
+      const usersResponse = await fetchGet(
+        "/api/authAPI/all"
       );
+
+      console.log(usersResponse)
 
       if (usersResponse.success) {
         const usersWithHabits = await Promise.all(
