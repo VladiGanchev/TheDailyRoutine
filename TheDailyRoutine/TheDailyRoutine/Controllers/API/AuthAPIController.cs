@@ -6,6 +6,7 @@ using TheDailyRoutine.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 using TheDailyRoutine.Core.Models.ServiceModels.User;
+using TheDailyRoutine.Infrastructure.Data;
 
 namespace TheDailyRoutine.Controllers.API
 {
@@ -16,15 +17,19 @@ namespace TheDailyRoutine.Controllers.API
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AuthAPIController> _logger;
+        private readonly ApplicationDbContext _context;
+        
         public AuthAPIController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<AuthAPIController> logger)
+            ILogger<AuthAPIController> logger,
+            ApplicationDbContext context)
 
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -96,12 +101,11 @@ namespace TheDailyRoutine.Controllers.API
             return BadRequest(new ErrorResponse { Error = "Invalid username/email or password" });
         }
 
-        [AllowAnonymous]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
         {
             var userId = _userManager.GetUserId(User);
-            var users = await _userManager.Users.Where(u=>u.Id != userId).ToListAsync();
+            var users = await _context.Users.Where(u=>u.Id != userId).ToListAsync();
             var usersData = users.Select(u => new UserDetailsModel
             {
                 Id = u.Id,
