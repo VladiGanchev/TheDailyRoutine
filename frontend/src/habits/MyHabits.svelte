@@ -17,6 +17,8 @@
             error = 'Failed to load habits';
             loading = false;
         }
+
+        console.log(habits)
     });
 
     const removeHabit = async (habitId) => {
@@ -73,7 +75,7 @@
                         <h3>{habit.title}</h3>
                     </div>
 
-                    <p>Is Public: {habit.IsPublic}</p>
+                    <p>Is Public: {habit.isPublic}</p>
 
                     <p class="description">{habit.description}</p>
 

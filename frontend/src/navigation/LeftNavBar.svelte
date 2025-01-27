@@ -3,6 +3,7 @@
 		{ name: "Today", path: "/#/today" },
 		{ name: "Calendar", path: "/#/calendar" },
 		{ name: "My Habits", path: "/#/my-habits" },
+        { name: "Users", path: "/#/users"}
 	];
 
 	let add_habits_selector = [

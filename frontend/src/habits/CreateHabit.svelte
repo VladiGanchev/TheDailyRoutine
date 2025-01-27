@@ -3,7 +3,7 @@
 	import { navigateTo } from '../js/helpers.js';
 
 	let frequency = '1';
-	let isPublic = false; // Нова променлива за публичния статус
+	let isPublic; // Нова променлива за публичния статус
 
 
 	let errorMessage = '';
@@ -24,6 +24,7 @@
                 Description: description,
                 // IsPublic: isPublic,  // Изпращаме публичния статус
             }
+			console.log(newHabitBody)
             const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
             if (!newHabitResponse.success) {
                 errorMessage = newHabitResponse.message;
@@ -115,9 +116,9 @@
 		<div class="form-group">
 			<label for="visability">Visability</label>
 			{#if id === -1}
-				<select id="visability" bind:value={isPublic} disabled>
-					<option value='true'>Public</option>
-					<option value='false'>Private</option>
+				<select id="visability" bind:value={isPublic}>
+					<option value={true}>Public</option>
+					<option value={false}>Private</option>
 				</select>
 			{:else}
 				<select id="visability" bind:value={isPublic}>

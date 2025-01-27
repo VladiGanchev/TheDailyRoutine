@@ -21,7 +21,7 @@
 			const newHabit = {
 				HabitId: id,
 				Frequency: freq,
-				Visability: visability,
+				IsPublic: visability,
 			};
 			const response = await fetchPost("/api/habits/assign", newHabit);
 			if (response.error) {
