@@ -25,6 +25,8 @@ namespace TheDailyRoutine.Core.Models.ServiceModels.Habits
 
         public double CompletionRate { get; set; }
 
+        
+
         public IEnumerable<CompletionDetailsModel> RecentCompletions { get; set; }
             = new List<CompletionDetailsModel>();
     }

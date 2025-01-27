@@ -21,7 +21,7 @@ namespace TheDailyRoutine.Core.Services
             _context = context;
         }
 
-        public async Task<(bool success, string error)> AddHabitToUserAsync(string userId, int habitId, int frequency)
+        public async Task<(bool success, string error)> AddHabitToUserAsync(string userId, int habitId, int frequency, bool isPublic)
         {
             try
             {
@@ -42,7 +42,8 @@ namespace TheDailyRoutine.Core.Services
                     UserId = userId,
                     HabitId = habitId,
                     Frequency = frequency,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    IsPublic = isPublic
                 };
 
                 await _context.UsersHabits.AddAsync(userHabit);
@@ -109,6 +110,45 @@ namespace TheDailyRoutine.Core.Services
                 .Include(uh => uh.Habit)
                 .Include(uh => uh.Completions)
                 .Where(uh => uh.UserId == userId)
+                .Select(uh => new UserHabitDetailsModel
+                {
+                    HabitId = uh.HabitId,
+                    Title = uh.Habit.Title,
+                    Description = uh.Habit.Description,
+                    Frequency = uh.Frequency,
+                    CreatedAt = uh.CreatedAt,
+                    CurrentStreak = CalculateCurrentStreak(uh.Completions),
+                    BestStreak = CalculateBestStreak(uh.Completions),
+                    CompletionRate = CalculateCompletionRate(uh.Completions),
+                    RecentCompletions = uh.Completions
+                        .OrderByDescending(c => c.CompletedAt)
+                        .Take(10)
+                        .Select(c => new CompletionDetailsModel
+                        {
+                            Id = c.Id,
+                            CompletedAt = c.CompletedAt,
+                            Completed = c.Completed,
+                            Notes = c.Notes
+                        })
+                })
+                .OrderBy(h => h.Title)
+                .ToListAsync();
+
+            return userHabits;
+        }
+
+        public async Task<IEnumerable<UserHabitDetailsModel>> GetPublicUserHabitsAsync(string userId)
+        {
+            if(!_context.Users.Any(u=>u.Id == userId))
+            {
+                throw new Exception("no user with such Id Found");
+            }
+
+            var userHabits = await _context.UsersHabits
+                .Where(uh => uh.UserId == userId)
+                .Where(uh=> uh.IsPublic)
+                .Include(uh => uh.Habit)
+                .Include(uh => uh.Completions)
                 .Select(uh => new UserHabitDetailsModel
                 {
                     HabitId = uh.HabitId,

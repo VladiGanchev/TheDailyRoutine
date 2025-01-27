@@ -3,6 +3,8 @@
 	import { navigateTo } from '../js/helpers.js';
 
 	let frequency = '1';
+	let isPublic = false; // Нова променлива за публичния статус
+
 
 	let errorMessage = '';
 
@@ -11,30 +13,32 @@
 	export let description;
 
 	const handleSubmit = async () => {
-		// Validate
-		if (!title || !description) {
-			errorMessage = 'Title and Description are required.';
-		} else {
-			// Create habit if it doesn't exist
-			if (id === -1) {
-				const newHabitBody = {
-					Title: title,
-					Description: description,
-				}
-				const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
-				if (!newHabitResponse.success) {
-					errorMessage = newHabitResponse.message;
-					return;
-				}
-				id = newHabitResponse.data.habitId;
-			}
-
+    // Validate
+    if (!title || !description) {
+        errorMessage = 'Title and Description are required.';
+    } else {
+        // Create habit if it doesn't exist
+        if (id === -1) {
+            const newHabitBody = {
+                Title: title,
+                Description: description,
+                // IsPublic: isPublic,  // Изпращаме публичния статус
+            }
+            const newHabitResponse = await fetchPost("/api/habits/predefined", newHabitBody);
+            if (!newHabitResponse.success) {
+                errorMessage = newHabitResponse.message;
+                return;
+            }
+            id = newHabitResponse.data.habitId;
+        }
 			// Add habit to user
 			let freq = parseInt(frequency);
 			const assignedHabitBody = {
 				HabitId: id,
 				Frequency: freq,
+				IsPublic: isPublic,
 			};
+			console.log(assignedHabitBody);
 			const assignedHabitResponse = await fetchPost("/api/habits/assign", assignedHabitBody);
 			if (!assignedHabitResponse.success) {
 				errorMessage = assignedHabitBody.message;
@@ -108,6 +112,21 @@
 			{/if}
 		</div>
 
+		<div class="form-group">
+			<label for="visability">Visability</label>
+			{#if id === -1}
+				<select id="visability" bind:value={isPublic} disabled>
+					<option value='true'>Public</option>
+					<option value='false'>Private</option>
+				</select>
+			{:else}
+				<select id="visability" bind:value={isPublic}>
+					<option value={true}> Public</option>
+					<option value={false}>Private</option>
+				</select>
+			{/if}
+		</div>
+
 		<button type="submit" class="submit-btn">Create Habit</button>
 	</form>
 </div>
@@ -146,6 +165,7 @@
     }
 
     input, textarea, select {
+		color:#eee;
         width: 100%;
         padding: 0.75rem;
         background-color: #1e1e1e;

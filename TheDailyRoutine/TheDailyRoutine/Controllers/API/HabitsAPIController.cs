@@ -31,12 +31,28 @@ namespace TheDailyRoutine.Controllers.API
             _logger = logger;
         }
 
+        [HttpGet("{id}/public")]
+        public async Task<IActionResult> GetPublicUserHabits(string id)
+        {
+            try
+            {
+                var habits = await _userHabitService.GetPublicUserHabitsAsync(id);
+                return Success(habits);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return Error(ex.Message);
+            }
+        }
+
         [HttpGet("predefined")]
         public async Task<IActionResult> GetPredefinedHabits()
         {
             try
             {
                 var habits = await _habitService.GetAllPredefinedHabitsAsync();
+
                 return Success(habits);
             }
             catch (Exception ex)
@@ -45,6 +61,8 @@ namespace TheDailyRoutine.Controllers.API
                 return Error("Failed to retrieve predefined habits");
             }
         }
+
+
         [HttpGet("debug")]
         public async Task<IActionResult> DebugAuth()
         {
@@ -96,6 +114,7 @@ namespace TheDailyRoutine.Controllers.API
 
             try
             {
+                // Прехвърляне на IsPublic към сървисния слой
                 var (success, habitId, error) = await _habitService.AddPredefinedHabitAsync(model);
 
                 if (!success)
@@ -204,7 +223,8 @@ namespace TheDailyRoutine.Controllers.API
                 var (success, error) = await _userHabitService.AddHabitToUserAsync(
                     userId,
                     model.HabitId,
-                    model.Frequency);
+                    model.Frequency,
+                    model.IsPublic);
 
                 if (!success)
                 {
@@ -252,7 +272,7 @@ namespace TheDailyRoutine.Controllers.API
                 }
 
                 _logger.LogInformation("Admin {UserId} updated predefined habit {HabitId}: {Title}",
-                    _userManager.GetUserId(User),
+                    _userManager.GetUserId(User),   
                     id,
                     model.Title);
 

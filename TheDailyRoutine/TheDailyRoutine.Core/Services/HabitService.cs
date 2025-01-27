@@ -5,6 +5,9 @@ using TheDailyRoutine.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using TheDailyRoutine.Core.Models.ServiceModels.Habits;
 using TheDailyRoutine.Core.Models.ServiceModels.Completions;
+using Microsoft.Extensions.Logging;
+using TheDailyRoutine.Infrastructure.Data;
+
 
 namespace TheDailyRoutine.Core.Services
 {
@@ -12,15 +15,25 @@ namespace TheDailyRoutine.Core.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public HabitService(ApplicationDbContext context)
+     
+
+        private readonly ILogger<HabitService> _logger;
+
+        public HabitService(ApplicationDbContext context,  ILogger<HabitService> logger)
         {
             _context = context;
+
+           
+
+            _logger = logger;
+
         }
+
 
         public async Task<IEnumerable<HabitServiceModel>> GetAllPredefinedHabitsAsync()
         {
             return await _context.Habits
-                .Where(h => h.Predefined)
+                .Where(h => h.Predefined) 
                 .Select(h => new HabitServiceModel
                 {
                     Id = h.Id,
@@ -48,7 +61,10 @@ namespace TheDailyRoutine.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<HabitServiceModel?> GetHabitByIdAsync(int id)
+       
+
+       
+    public async Task<HabitServiceModel?> GetHabitByIdAsync(int id)
         {
             return await _context.Habits
                 .Where(h => h.Id == id)
@@ -108,6 +124,31 @@ namespace TheDailyRoutine.Core.Services
 
         public async Task<(bool success, int habitId, string error)> AddPredefinedHabitAsync(AddHabitServiceModel model)
         {
+            try
+            {
+                var habit = new Habit
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                     // Добавяме публичността
+                };
+
+                // Добавяме навика в базата данни
+                _context.Habits.Add(habit);
+                await _context.SaveChangesAsync();
+
+                return (true, habit.Id, null);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while adding predefined habit.");
+                return (false, 0, "Error saving habit.");
+            }
+        }
+
+       /*
+        public async Task<(bool success, int habitId, string error)> AddPredefinedHabitAsync(AddHabitServiceModel model)
+        {
             if (await HabitExistsAsync(model.Title))
             {
                 return (false, 0, "A habit with this title already exists.");
@@ -132,6 +173,7 @@ namespace TheDailyRoutine.Core.Services
                 return (false, 0, $"Failed to add habit: {ex.Message}");
             }
         }
+       */
 
         public async Task<(bool success, string error)> UpdatePredefinedHabitAsync(EditHabitServiceModel model)
         {

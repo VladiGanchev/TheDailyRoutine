@@ -12,7 +12,7 @@ namespace TheDailyRoutine.Core.Contracts
         /// <summary>
         /// Adds a habit to a user's list of habits
         /// </summary>
-        Task<(bool success, string error)> AddHabitToUserAsync(string userId, int habitId, int frequency);
+        Task<(bool success, string error)> AddHabitToUserAsync(string userId, int habitId, int frequency, bool IsPublic);
 
         /// <summary>
         /// Removes a habit from a user's list
@@ -58,6 +58,8 @@ namespace TheDailyRoutine.Core.Contracts
         /// Gets the completion rate for a specific period
         /// </summary>
         Task<double> GetCompletionRateAsync(string userId, int habitId, DateTime startDate, DateTime endDate);
+
+        Task<IEnumerable<UserHabitDetailsModel>> GetPublicUserHabitsAsync(string userId);
 
         Task<IEnumerable<string>> GetActiveUsersAsync();
         Task<IDictionary<(string userId, int habitId), int>> GetCurrentStreaksAsync();

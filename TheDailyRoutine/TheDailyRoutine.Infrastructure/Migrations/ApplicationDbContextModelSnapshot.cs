@@ -486,6 +486,9 @@ namespace TheDailyRoutine.Infrastructure.Migrations
                     b.Property<int>("Frequency")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
                     b.HasKey("UserId", "HabitId");
 
                     b.HasIndex("HabitId");

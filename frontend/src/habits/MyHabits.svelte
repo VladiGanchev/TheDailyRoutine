@@ -73,6 +73,8 @@
                         <h3>{habit.title}</h3>
                     </div>
 
+                    <p>Is Public: {habit.IsPublic}</p>
+
                     <p class="description">{habit.description}</p>
 
                     <div class="stats">
