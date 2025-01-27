@@ -159,6 +159,7 @@ namespace TheDailyRoutine.Core.Services
                     CurrentStreak = CalculateCurrentStreak(uh.Completions),
                     BestStreak = CalculateBestStreak(uh.Completions),
                     CompletionRate = CalculateCompletionRate(uh.Completions),
+                    IsPublic = uh.IsPublic,
                     RecentCompletions = uh.Completions
                         .OrderByDescending(c => c.CompletedAt)
                         .Take(10)
@@ -169,6 +170,7 @@ namespace TheDailyRoutine.Core.Services
                             Completed = c.Completed,
                             Notes = c.Notes
                         })
+                     
                 })
                 .OrderBy(h => h.Title)
                 .ToListAsync();
