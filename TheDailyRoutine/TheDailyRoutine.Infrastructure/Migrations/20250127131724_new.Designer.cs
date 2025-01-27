@@ -12,8 +12,8 @@ using TheDailyRoutine.Infrastructure.Data;
 namespace TheDailyRoutine.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250125170521_init")]
-    partial class init
+    [Migration("20250127131724_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -487,6 +487,9 @@ namespace TheDailyRoutine.Infrastructure.Migrations
 
                     b.Property<int>("Frequency")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "HabitId");
 
