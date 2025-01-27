@@ -99,8 +99,9 @@ namespace TheDailyRoutine.Controllers.API
         [AllowAnonymous]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers()
-        { 
-            var users = await _userManager.Users.ToListAsync();
+        {
+            var userId = _userManager.GetUserId(User);
+            var users = await _userManager.Users.Where(u=>u.Id != userId).ToListAsync();
             var usersData = users.Select(u => new UserDetailsModel
             {
                 Id = u.Id,
