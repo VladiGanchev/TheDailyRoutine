@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using TheDailyRoutine.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using TheDailyRoutine.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
+using TheDailyRoutine.Core.Models.ServiceModels.User;
 
 namespace TheDailyRoutine.Controllers.API
 {
@@ -92,9 +95,25 @@ namespace TheDailyRoutine.Controllers.API
 
             return BadRequest(new ErrorResponse { Error = "Invalid username/email or password" });
         }
+
+        [AllowAnonymous]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllUsers()
+        { 
+            var users = await _userManager.Users.ToListAsync();
+            var usersData = users.Select(u => new UserDetailsModel
+            {
+                Id = u.Id,
+                Username = u.UserName,
+                Email = u.Email
+            });
+            return Success(usersData);
+
+        }
     }
 
-    public class ErrorResponse
+
+public class ErrorResponse 
     {
         public string Error { get; set; }
     }
